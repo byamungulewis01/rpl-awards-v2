@@ -276,8 +276,7 @@ const scrollToCategories = () => {
 
                                     <!-- Candidate info on image -->
                                     <div class="absolute bottom-0 left-0 w-full p-4 text-white">
-                                        <div class="bg-sky-700 text-white text-xs px-2 py-1 rounded float-end">#{{
-                                            candidate.code }}</div>
+                                        <div class="bg-sky-700 text-white text-xs px-2 py-1 rounded float-end">Via USSD <strong>*192*{{ candidate.code }}#</strong></div>
                                     </div>
                                 </div>
                             </div>
