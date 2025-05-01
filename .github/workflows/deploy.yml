@@ -29,8 +29,8 @@ jobs:
           curl -sS https://getcomposer.org/installer | php
           php composer.phar install --no-interaction --prefer-dist
 
-      # - name: Copy .env.example to .env
-      #   run: cp .env.example .env
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
 
       # - name: Generate Laravel application key
       #   run: php artisan key:generate
