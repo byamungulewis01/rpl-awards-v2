@@ -32,8 +32,8 @@ jobs:
       # - name: Copy .env.example to .env
       #   run: cp .env.example .env
 
-      - name: Generate Laravel application key
-        run: php artisan key:generate
+      # - name: Generate Laravel application key
+      #   run: php artisan key:generate
 
       - name: Install Node.js
         uses: actions/setup-node@v2
