@@ -15,7 +15,7 @@ use App\Http\Controllers\Admin\AdminNominationController;
 // });
 
 Route::get('/', [VotingController::class, 'index'])->name('voting.index');
-
+Route::post('/process-payment', [VotingController::class, 'processPayment'])->name('voting.process');
 
 Route::middleware(['auth', 'verified', 'track-last-login', 'active-user'])->group(function () {
     Route::get('/dashboard', function () {

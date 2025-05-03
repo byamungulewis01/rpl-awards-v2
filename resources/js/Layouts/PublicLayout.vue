@@ -52,20 +52,19 @@ const scrollToSection = (sectionId) => {
             <nav class="hidden md:flex items-center space-x-6">
                 <!-- home -->
                 <button @click="goToHome" class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
-                    Home
+                    Ahabanza
                 </button>
-                <button @click="scrollToSection('categories')"
+                <button @click="scrollToSection('news')"
                     class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
-                    Vote Now
+                    Amakuru
                 </button>
-
+                <button @click="scrollToSection('archive')"
+                    class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
+                    Ububiko
+                </button>
                 <button @click="scrollToSection('contact-us')"
                     class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
-                    Contact
-                </button>
-                <button @click="scrollToSection('faq')"
-                    class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
-                    FAQ
+                    Twandikire
                 </button>
             </nav>
 
@@ -112,20 +111,20 @@ const scrollToSection = (sectionId) => {
                 <div class="flex flex-col space-y-4 py-4">
                     <button @click="goToHome"
                         class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
-                        Home
+                        Ahabanza
                     </button>
-                    <button @click="scrollToSection('categories')"
+                    <button @click="scrollToSection('news')"
                         class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
-                        Vote Now
+                        Amakuru
                     </button>
 
+                    <button @click="scrollToSection('archive')"
+                        class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
+                        Ububiko
+                    </button>
                     <button @click="scrollToSection('contact-us')"
                         class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
-                        Contact
-                    </button>
-                    <button @click="scrollToSection('faq')"
-                        class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
-                        FAQ
+                        Twandikire
                     </button>
                 </div>
             </div>
