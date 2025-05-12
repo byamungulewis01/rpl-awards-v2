@@ -57,7 +57,6 @@ const form = useForm({
     category_id: props.category?.id,
     name: '',
     image: null,
-    code: '',
     order: 1,
     status: 'active',
 });
@@ -95,7 +94,6 @@ const openEditDialog = (candidate) => {
     form.id = candidate.id;
     form.category_id = props.category.id;
     form.name = candidate.name;
-    form.code = candidate.code || '';
     form.order = candidate.order || 1;
     form.status = candidate.status || 'active';
 
@@ -259,8 +257,9 @@ const sortedCandidates = computed(() => {
                         :class="{ 'opacity-60': candidate.status === 'inactive' }" class="rounded-none">
                         <CardHeader class="pb-2 space-y-0 p-3">
                             <CardTitle class="text-md font-light flex justify-between items-center">
-                                <span>Code: {{ candidate.code }}</span>
-                                <Badge :variant="candidate.status === 'active' ? 'default' : 'destructive'" class="text-xs">
+                                <!-- <span>Code: {{ candidate.code }}</span> -->
+                                <Badge :variant="candidate.status === 'active' ? 'default' : 'destructive'"
+                                    class="text-xs">
                                     {{ candidate.status.toUpperCase() }}
                                 </Badge>
                             </CardTitle>
@@ -274,7 +273,8 @@ const sortedCandidates = computed(() => {
                                     <ImageIcon class="w-12 h-12 text-gray-300" />
                                 </div>
 
-                                <div class="absolute top-2 left-2 bg-black/70 font-thin text-white text-xs px-2 py-1 rounded">
+                                <div
+                                    class="absolute top-2 left-2 bg-black/70 font-thin text-white text-xs px-2 py-1 rounded">
                                     ORDER: {{ candidate.order }}
                                 </div>
                             </div>
@@ -338,16 +338,10 @@ const sortedCandidates = computed(() => {
                             <div v-if="form.errors.name" class="text-sm text-red-500">{{ form.errors.name }}</div>
                         </div>
 
-                        <!-- Code Field -->
-                        <div class="grid gap-2">
-                            <Label for="code">Code</Label>
-                            <Input id="code" v-model="form.code" type="number" placeholder="Unique Candidate Code"
-                                required />
-                            <div v-if="form.errors.code" class="text-sm text-red-500">{{ form.errors.code }}</div>
-                        </div>
+
 
                         <!-- Order Field -->
-                        <div class="grid gap-2">
+                        <div v-if="isEditMode" class="grid gap-2">
                             <Label for="order">Order</Label>
                             <Input type="number" id="order" v-model="form.order" min="1" placeholder="Display Order"
                                 required />

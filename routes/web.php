@@ -8,13 +8,15 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\Admin\AdminNominationController;
+use App\Http\Controllers\NewsController;
 
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', );
 // });
 
-Route::get('/', [VotingController::class, 'index'])->name('voting.index');
+Route::get('/', [VotingController::class, 'index'])->name('welcome');
+Route::get('/news/{slug}', [VotingController::class, 'news_details'])->name('news.show');
 Route::post('/process-payment', [VotingController::class, 'processPayment'])->name('voting.process');
 
 Route::middleware(['auth', 'verified', 'track-last-login', 'active-user'])->group(function () {
@@ -56,7 +58,14 @@ Route::middleware(['auth', 'verified', 'track-last-login', 'active-user'])->grou
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     ;
 
-
+    Route::controller(NewsController::class)->group(function () {
+        Route::get('/news', 'index')->name('news.index');
+        Route::post('/news', 'store')->name('news.store');
+        Route::get('/news/create', 'create')->name('news.create');
+        Route::put('/news/{slug}', 'update')->name('news.update');
+        Route::get('/news/{slug}/edit', 'edit')->name('news.edit');
+        Route::delete('/news/{slug}', 'destroy')->name('news.destroy');
+    });
 });
 
 require __DIR__ . '/auth.php';

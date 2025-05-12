@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('candidate_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('phone_number', 20);
             $table->string('payment_method', 20); // mtn, airtel, etc.
             $table->integer('amount');

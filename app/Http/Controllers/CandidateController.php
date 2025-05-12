@@ -18,16 +18,18 @@ class CandidateController extends Controller
             $validatedData = $request->validate([
                 'category_id' => 'required|exists:categories,id',
                 'name' => 'required|string|max:255',
-                'code' => 'required|string|max:50|unique:candidates,code',
                 'order' => 'required|integer|min:1',
                 'status' => 'required|in:active,inactive',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
             // Handle image upload
+
             if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('candidates', 'public');
-                $validatedData['image'] = $imagePath;
+                $image = $request->file('image');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move('candidates', $imageName);
+                $validatedData['image'] = "/candidates/{$imageName}";
             }
 
             // Create the candidate
@@ -53,7 +55,6 @@ class CandidateController extends Controller
             $validatedData = $request->validate([
                 'category_id' => 'required|exists:categories,id',
                 'name' => 'required|string|max:255',
-                'code' => 'required|string|max:50|unique:candidates,code,' . $candidate->id,
                 'order' => 'required|integer|min:1',
                 'status' => 'required|in:active,inactive',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -61,17 +62,18 @@ class CandidateController extends Controller
 
 
             // Handle image upload
+
             if ($request->hasFile('image')) {
-                // Delete old image if exists
-                if ($candidate->image) {
-                    Storage::disk('public')->delete($candidate->image);
+                // Delete old image
+                if (file_exists($candidate->image)) {
+                    unlink($candidate->image);
                 }
 
-                $imagePath = $request->file('image')->store('candidates', 'public');
-                $validatedData['image'] = $imagePath;
-            }
-            // If no new image is uploaded, keep the old one
-            else {
+                $image = $request->file('image');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move('candidates', $imageName);
+                $validatedData['image'] = "/candidates/{$imageName}";
+            } else {
                 $validatedData['image'] = $candidate->image;
             }
 
@@ -158,8 +160,9 @@ class CandidateController extends Controller
     {
         try {
             // Delete image if exists
-            if ($candidate->image) {
-                Storage::disk('public')->delete($candidate->image);
+
+            if (file_exists($candidate->image)) {
+                unlink($candidate->image);
             }
 
             // Get the candidate's order

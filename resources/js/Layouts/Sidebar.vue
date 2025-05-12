@@ -24,6 +24,7 @@ import {
     Medal,
     LayoutDashboard,
     BarChart,
+    Newspaper,
 } from 'lucide-vue-next';
 import imagePath from '@/lib/image';
 
@@ -62,6 +63,7 @@ const adminMenus = [
     },
     { name: 'Awards Categories', icon: Medal, route: 'categories.index' },
     { name: 'Nomination Stats', icon: BarChart, route: 'admin.nominations.dashboard' },
+    { name: 'News', icon: Newspaper, route: 'news.index' },
 ];
 
 

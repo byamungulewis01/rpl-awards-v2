@@ -11,6 +11,7 @@ class Payment extends Model
 
     protected $fillable = [
         'candidate_id',
+        'category_id',
         'phone_number',
         'payment_method',
         'amount',
@@ -27,6 +28,11 @@ class Payment extends Model
     public function candidate()
     {
         return $this->belongsTo(Candidate::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function votes()

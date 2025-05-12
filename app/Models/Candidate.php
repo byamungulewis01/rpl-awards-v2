@@ -18,7 +18,6 @@ class Candidate extends Model
         'category_id',
         'name',
         'image',
-        'code',
         'order',
         'status',
     ];

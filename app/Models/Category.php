@@ -8,7 +8,7 @@ class Category extends Model
 {
     //
     protected $fillable = [
-        'league',
+        'league', //men , women
         'name',
         'description',
         'status',

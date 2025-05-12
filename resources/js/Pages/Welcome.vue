@@ -10,6 +10,11 @@ import NewsArchive from '@/Components/NewsArchive.vue';
 const props = defineProps(
     {
         categories: Array,
+        vote_amount: Number,
+        news: {
+            type: Array,
+            required: true
+        }
     }
 )
 
@@ -18,7 +23,7 @@ const categories = ref(props.categories || []);
 const loading = ref(false);
 const paymentLoading = ref(false);
 const voteCount = ref(1);
-const totalAmount = ref(200);
+const totalAmount = ref(props.vote_amount);
 const selectedCandidate = ref(null);
 const showPaymentModal = ref(false);
 const paymentMethod = ref('mtn');
@@ -45,7 +50,7 @@ const filteredCategories = computed(() => {
 
 // Update total amount when vote count changes
 watch(voteCount, (newCount) => {
-    totalAmount.value = newCount * 200;
+    totalAmount.value = newCount * props.vote_amount;
 });
 
 const handleLeagueSelect = (league) => {
@@ -112,17 +117,19 @@ const validatePhoneNumber = () => {
 // Use Inertia form for submission
 const form = useForm({
     candidateId: '',
+    categoryId: '',
     votes: 1,
     phoneNumber: '',
     paymentMethod: 'mtn',
-    amount: 200
+    amount: props.vote_amount
 });
 
 const resetFormData = () => {
     // Reset form inputs
     phoneNumber.value = '';
     voteCount.value = 1;
-    totalAmount.value = 200;
+    form.categoryId = '';
+    totalAmount.value = props.vote_amount;
 
     // Reset validation states
     phoneNumberError.value = '';
@@ -142,6 +149,7 @@ const handlePaymentSubmit = (e) => {
 
     // Update form data
     form.candidateId = selectedCandidate.value.id;
+    form.categoryId = selectedCategory.value.id;
     form.votes = voteCount.value;
     form.phoneNumber = phoneNumber.value;
     form.paymentMethod = paymentMethod.value;
@@ -186,7 +194,7 @@ const handleCloseDialog = () => {
     <PublicLayout title="Vote for the best in Rwandan football">
 
         <HeroWithCountdown :targetDate="new Date('2025-06-30')" :votePrice="200" />
-        <NewsSlider :autoSlide="true" :interval="5000" />
+        <NewsSlider :news="news" />
         <!-- Categories and Voting Section -->
         <div id="categories" class="bg-gray-50 py-12">
             <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
@@ -248,12 +256,12 @@ const handleCloseDialog = () => {
                                         </div>
 
                                         <!-- Candidate info on image -->
-                                        <div class="absolute bottom-0 left-0 w-full p-4 text-white">
+                                        <!-- <div class="absolute bottom-0 left-0 w-full p-4 text-white">
                                             <div class="bg-sky-700 text-white text-xs px-2 py-1 rounded float-end">Via
                                                 USSD
                                                 <strong>*192*{{ candidate.code }}#</strong>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -526,9 +534,7 @@ const handleCloseDialog = () => {
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        Ikindi, tora unyuze kuri USSD: <strong class="ml-1">*192*{{
-                                            selectedCandidate?.code
-                                            }}#</strong>
+                                        Ikindi, tora unyuze kuri USSD: <strong class="ml-1">*513*001#</strong>
                                     </div>
                                 </div>
                             </div>

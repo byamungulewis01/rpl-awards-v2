@@ -1,5 +1,5 @@
 <script setup>
-import { router } from '@inertiajs/vue3';
+import { router, Link } from '@inertiajs/vue3';
 import imagePath from '@/lib/image';
 import { ref } from 'vue';
 
@@ -16,32 +16,19 @@ const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value;
 };
 
-// goToHome
-const goToHome = () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-    });
-};
-
 const closeMenu = () => {
     isMenuOpen.value = false;
 };
 
-const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    closeMenu();
-};
 </script>
 
 <template>
     <header class="bg-white shadow-sm border-b sticky top-0 z-40">
         <div class="max-w-[85rem] mx-auto px-4 py-4 sm:px-6 lg:px-8 flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <img :src="imagePath('/img/RPL-LOGO.png')" alt="Rwanda Premier League" class="h-12" />
+                <Link :href="route('welcome')">
+                    <img :src="imagePath('/img/RPL-LOGO.png')" alt="Rwanda Premier League" class="h-12" />
+                </Link>
                 <div>
                     <h1 class="text-2xl font-bold text-blue-600">RPL 2025 Awards</h1>
                     <p class="text-sm text-gray-500">{{ title }}</p>
@@ -50,22 +37,18 @@ const scrollToSection = (sectionId) => {
 
             <!-- Desktop Navigation -->
             <nav class="hidden md:flex items-center space-x-6">
-                <!-- home -->
-                <button @click="goToHome" class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
+                <Link :href="route('welcome')" class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
                     Ahabanza
-                </button>
-                <button @click="scrollToSection('news')"
-                    class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
+                </Link>
+                <Link :href="route('welcome') + '#news'" class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
                     Amakuru
-                </button>
-                <button @click="scrollToSection('archive')"
-                    class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
+                </Link>
+                <Link :href="route('welcome') + '#archive'" class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
                     Ububiko
-                </button>
-                <button @click="scrollToSection('contact-us')"
-                    class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
+                </Link>
+                <Link :href="route('welcome') + '#contact-us'" class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
                     Twandikire
-                </button>
+                </Link>
             </nav>
 
             <!-- Auth / Logo -->
@@ -109,23 +92,22 @@ const scrollToSection = (sectionId) => {
                     </button>
                 </div>
                 <div class="flex flex-col space-y-4 py-4">
-                    <button @click="goToHome"
+                    <Link :href="route('welcome')"
                         class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                         Ahabanza
-                    </button>
-                    <button @click="scrollToSection('news')"
+                    </Link>
+                    <Link :href="route('news.index')"
                         class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                         Amakuru
-                    </button>
-
-                    <button @click="scrollToSection('archive')"
+                    </Link>
+                    <Link :href="route('welcome') + '#archive'"
                         class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                         Ububiko
-                    </button>
-                    <button @click="scrollToSection('contact-us')"
+                    </Link>
+                    <Link :href="route('welcome') + '#contact-us'"
                         class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                         Twandikire
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
@@ -179,3 +161,21 @@ const scrollToSection = (sectionId) => {
         </div>
     </footer>
 </template>
+
+<style scoped>
+.animate-fade-in-down {
+    animation: fadeInDown 0.5s ease-in-out;
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
