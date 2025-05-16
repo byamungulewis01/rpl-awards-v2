@@ -21,52 +21,22 @@ const props = defineProps(
 // State management for categories, candidates and votes
 const categories = ref(props.categories || []);
 const loading = ref(false);
-const paymentLoading = ref(false);
 const voteCount = ref(1);
 const totalAmount = ref(props.vote_amount);
 const selectedCandidate = ref(null);
-const showPaymentModal = ref(false);
-const paymentMethod = ref('mtn');
-const phoneNumber = ref('');
-const phoneNumberError = ref('');
-const isPhoneNumberValid = ref(true);
 const showThankYou = ref(false);
-const selectedLeague = ref('men'); // Default to men's league
 const selectedCategory = ref(null);
 const showCandidateDialog = ref(false);
 
 // Set default category if available
 if (categories.value.length > 0) {
-    const defaultCategory = categories.value.find(cat => cat.league === selectedLeague.value);
-    if (defaultCategory) {
-        selectedCategory.value = defaultCategory;
-    }
+    selectedCategory.value = categories.value[0];
 }
-
-// Filtered categories based on selected league
-const filteredCategories = computed(() => {
-    return categories.value.filter(category => category.league === selectedLeague.value);
-});
 
 // Update total amount when vote count changes
 watch(voteCount, (newCount) => {
     totalAmount.value = newCount * props.vote_amount;
 });
-
-const handleLeagueSelect = (league) => {
-    selectedLeague.value = league;
-
-    // Reset selection when changing league
-    const firstCategoryInLeague = categories.value.find(cat => cat.league === league);
-    if (firstCategoryInLeague) {
-        selectedCategory.value = firstCategoryInLeague;
-    } else {
-        selectedCategory.value = null;
-    }
-
-    selectedCandidate.value = null;
-    voteCount.value = 1;
-};
 
 const handleCategorySelect = (category) => {
     selectedCategory.value = category;
@@ -84,108 +54,48 @@ const handleCandidateSelect = (candidate) => {
     showCandidateDialog.value = true;
 };
 
-const handleProceedToPayment = () => {
-    showPaymentModal.value = true;
-    showCandidateDialog.value = false;
-    // Reset phone validation when opening modal
-    phoneNumberError.value = '';
-    isPhoneNumberValid.value = true;
-};
-
-// Validate phone number format
-const validatePhoneNumber = () => {
-    // Reset validation state
-    phoneNumberError.value = '';
-    isPhoneNumberValid.value = true;
-
-    // Check if phone number starts with '07' and is exactly 10 digits
-    const phoneRegex = /^07\d{8}$/;
-
-    if (!phoneNumber.value) {
-        phoneNumberError.value = 'Nimero ya Telephone irakenewe';
-        isPhoneNumberValid.value = false;
-        return false;
-    } else if (!phoneRegex.test(phoneNumber.value)) {
-        phoneNumberError.value = 'Nimere ya Telephone igomba kuba itangizwa na 07';
-        isPhoneNumberValid.value = false;
-        return false;
-    }
-
-    return true;
-};
-
 // Use Inertia form for submission
 const form = useForm({
     candidateId: '',
     categoryId: '',
     votes: 1,
-    phoneNumber: '',
-    paymentMethod: 'mtn',
-    amount: props.vote_amount
 });
 
 const resetFormData = () => {
     // Reset form inputs
-    phoneNumber.value = '';
     voteCount.value = 1;
     form.categoryId = '';
     totalAmount.value = props.vote_amount;
-
-    // Reset validation states
-    phoneNumberError.value = '';
-    isPhoneNumberValid.value = true;
 
     // Reset Inertia form
     form.reset();
 };
 
-const handlePaymentSubmit = (e) => {
-    e.preventDefault();
-
-    // Validate phone number before proceeding
-    if (!validatePhoneNumber()) {
-        return;
-    }
-
+const handleVoteSubmit = () => {
     // Update form data
     form.candidateId = selectedCandidate.value.id;
     form.categoryId = selectedCategory.value.id;
     form.votes = voteCount.value;
-    form.phoneNumber = phoneNumber.value;
-    form.paymentMethod = paymentMethod.value;
-    form.amount = totalAmount.value;
 
-    // Show loading
-    paymentLoading.value = true;
+
+    showCandidateDialog.value = false;
+    showThankYou.value = true;
+    // resetFormData();
 
     // Submit the form
-    form.post(route('voting.process'), {
-        preserveScroll: true,
-        onSuccess: () => {
-            showPaymentModal.value = false;
-            showThankYou.value = true;
-            paymentLoading.value = false;
-            resetFormData();
-
-        },
-        onError: () => {
-            paymentLoading.value = false;
-            // If there's a phone number error from the server
-            if (form.errors.phoneNumber) {
-                phoneNumberError.value = form.errors.phoneNumber;
-                isPhoneNumberValid.value = false;
-            }
-        }
-    });
+    // form.post(route('voting.process'), {
+    //     preserveScroll: true,
+    //     onSuccess: () => {
+    //         showCandidateDialog.value = false;
+    //         showThankYou.value = true;
+    //         resetFormData();
+    //     },
+    //     onError: () => {
+    //         // Handle errors if needed
+    //     }
+    // });
 };
 
-const handleCloseModal = () => {
-    showPaymentModal.value = false;
-};
-
-const handleCloseDialog = () => {
-    showCandidateDialog.value = false;
-};
 </script>
 
 <template>
@@ -193,7 +103,7 @@ const handleCloseDialog = () => {
     <Head title="Voting" />
     <PublicLayout title="Vote for the best in Rwandan football">
 
-        <HeroWithCountdown :targetDate="new Date('2025-06-30')" :votePrice="200" />
+        <HeroWithCountdown :targetDate="new Date('2025-05-30')" :votePrice="200" />
         <NewsSlider :news="news" />
         <!-- Categories and Voting Section -->
         <div id="categories" class="bg-gray-50 py-12">
@@ -207,23 +117,6 @@ const handleCloseDialog = () => {
                     </p>
                 </div>
 
-                <!-- League Filter Tabs -->
-                <div class="mb-8 flex justify-center">
-                    <div class="inline-flex bg-white rounded-lg p-1 shadow">
-                        <button @click="handleLeagueSelect('men')" :class="`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${selectedLeague === 'men'
-                            ? 'bg-sky-500 text-white'
-                            : 'text-gray-500 hover:text-sky-700'}`">
-                            ABAGABO
-                        </button>
-
-                        <button @click="handleLeagueSelect('women')" :class="`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${selectedLeague === 'women'
-                            ? 'bg-pink-500 text-white'
-                            : 'text-gray-500 hover:text-pink-700'}`">
-                            ABAGORE
-                        </button>
-                    </div>
-                </div>
-
                 <div v-if="loading" class="flex justify-center py-12">
                     <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-sky-500"></div>
                 </div>
@@ -231,7 +124,7 @@ const handleCloseDialog = () => {
                 <template v-else>
                     <!-- Category Tabs -->
                     <div class="flex flex-wrap justify-center gap-3 mb-8">
-                        <button v-for="category in filteredCategories" :key="category.id"
+                        <button v-for="category in categories" :key="category.id"
                             @click="handleCategorySelect(category)" :class="`px-6 py-3 rounded-full text-sm md:text-base font-medium transition-all duration-300 ${selectedCategory?.id === category.id
                                 ? 'bg-sky-500 text-white shadow-lg transform scale-105'
                                 : 'bg-white text-sky-700 hover:bg-sky-50 shadow'
@@ -254,14 +147,6 @@ const handleCloseDialog = () => {
                                         <div
                                             class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/10 to-transparent h-32">
                                         </div>
-
-                                        <!-- Candidate info on image -->
-                                        <!-- <div class="absolute bottom-0 left-0 w-full p-4 text-white">
-                                            <div class="bg-sky-700 text-white text-xs px-2 py-1 rounded float-end">Via
-                                                USSD
-                                                <strong>*192*{{ candidate.code }}#</strong>
-                                            </div>
-                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -294,103 +179,10 @@ const handleCloseDialog = () => {
             </div>
         </div>
 
-        <NewsArchive />
+        <!-- <NewsArchive /> -->
 
-        <!-- Contact Us Section -->
-        <div id="contact-us" class="bg-white py-12 border-t border-gray-200">
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                        Twandikire
-                    </h2>
-                    <p class="mt-4 text-lg text-gray-500">
-                        Ufite ibibazo ku matora cyangwa ukeneye ubufasha? Vugisha ikipe yacu y'ubufasha.
-                    </p>
-                </div>
 
-                <div class="flex flex-col lg:flex-row gap-8">
-                    <!-- Contact Cards - Right side on desktop, top on mobile -->
-                    <div class="w-full lg:w-1/3 space-y-6">
-                        <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-                            <div
-                                class="flex justify-center items-center h-12 w-12 rounded-md bg-sky-500 text-white mx-auto mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                </svg>
-                            </div>
-                            <h3 class="text-lg font-medium text-gray-900 text-center mb-2">Imeyili</h3>
-                            <p class="text-gray-600 text-center">support@rwandapl.rw</p>
-                            <div class="mt-4 text-center">
-                                <a href="mailto:support@rwandapl.rw"
-                                    class="text-sky-600 hover:text-sky-800 font-medium">Ohereza
-                                    Imeyili</a>
-                            </div>
-                        </div>
 
-                        <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-                            <div
-                                class="flex justify-center items-center h-12 w-12 rounded-md bg-sky-500 text-white mx-auto mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                </svg>
-                            </div>
-                            <h3 class="text-lg font-medium text-gray-900 text-center mb-2">Telefoni</h3>
-                            <p class="text-gray-600 text-center">+250 788 123 456</p>
-                            <div class="mt-4 text-center">
-                                <a href="tel:+250788123456" class="text-sky-600 hover:text-sky-800 font-medium">Hamagara
-                                    Ubu</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Contact Form - Left side on desktop, bottom on mobile -->
-                    <div class="w-full lg:w-2/3 bg-white rounded-lg shadow-md p-6 md:p-8">
-                        <h3 class="text-xl font-bold text-gray-900 mb-6">Dutumire ubutumwa</h3>
-                        <form>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                <div>
-                                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Izina
-                                        Ryawe</label>
-                                    <input type="text" id="name" name="name"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500"
-                                        placeholder="Andika izina ryawe" required>
-                                </div>
-                                <div>
-                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Imeyili
-                                        Yawe</label>
-                                    <input type="email" id="email" name="email"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500"
-                                        placeholder="Andika imeyili yawe" required>
-                                </div>
-                            </div>
-                            <div class="mb-6">
-                                <label for="subject"
-                                    class="block text-sm font-medium text-gray-700 mb-1">Insanganyamatsiko</label>
-                                <input type="text" id="subject" name="subject"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500"
-                                    placeholder="Andika insanganyamatsiko" required>
-                            </div>
-                            <div class="mb-6">
-                                <label for="message"
-                                    class="block text-sm font-medium text-gray-700 mb-1">Ubutumwa</label>
-                                <textarea id="message" name="message" rows="4"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-sky-500 focus:border-sky-500"
-                                    placeholder="Ubutumwa bwawe..." required></textarea>
-                            </div>
-                            <div>
-                                <button type="submit"
-                                    class="w-full md:w-auto px-6 py-3 bg-sky-500 text-white font-medium rounded-md shadow hover:bg-sky-600 transition">Ohereza
-                                    Ubutumwa</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Candidate Dialog using shadcn-vue Dialog component -->
         <Dialog :open="showCandidateDialog" @update:open="showCandidateDialog = $event">
@@ -521,26 +313,10 @@ const handleCloseDialog = () => {
                                         </button>
                                     </div>
                                 </div>
-
-                                <div class="flex justify-between items-center">
-                                    <span class="block text-gray-500">Igiteranyo</span>
-                                    <div class="text-xl font-bold text-sky-700">{{ totalAmount }} RWF</div>
-                                </div>
-
-                                <div class="bg-sky-50 mt-4 p-3 rounded text-sm text-sky-700">
-                                    <div class="flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                        Ikindi, tora unyuze kuri USSD: <strong class="ml-1">*513*001#</strong>
-                                    </div>
-                                </div>
                             </div>
 
                             <!-- Vote Button -->
-                            <button @click="handleProceedToPayment"
+                            <button @click="handleVoteSubmit"
                                 class="w-full py-3 bg-sky-500 text-white font-medium rounded-lg shadow-md hover:bg-sky-600 transition-all duration-300">
                                 Tora Nonaha
                             </button>
@@ -550,144 +326,30 @@ const handleCloseDialog = () => {
             </DialogContent>
         </Dialog>
 
-
-        <!-- Payment Modal -->
-        <div v-if="showPaymentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden animate-scale-in">
-                <div class="bg-sky-500 px-6 py-4 flex justify-between items-center">
-                    <h3 class="text-lg font-medium text-white">Ibisobanuro by'Ubwishyu</h3>
-                    <button @click="handleCloseModal" class="text-white hover:text-sky-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="p-6">
-                    <div class="mb-6">
-                        <div class="flex justify-between items-center mb-4 pb-4 border-b border-gray-200">
-                            <div>
-                                <div class="text-gray-600">Umukandida</div>
-                                <div class="font-medium">{{ selectedCandidate?.name }}</div>
-                            </div>
-                            <div>
-                                <div class="text-gray-600">Amajwi</div>
-                                <div class="font-medium text-right">{{ voteCount }}</div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mb-4 pb-4 border-b border-gray-200">
-                            <div class="text-gray-800 font-medium">Igiteranyo cy'Amafaranga</div>
-                            <div class="text-xl font-bold text-sky-600">{{ totalAmount }} RWF</div>
-                        </div>
-                    </div>
-
-                    <form @submit="handlePaymentSubmit">
-                        <div class="mb-6">
-                            <label class="block text-gray-700 mb-2">Hitamo Uburyo bwo Kwishyura</label>
-                            <div class="flex gap-4">
-                                <div @click="paymentMethod = 'mtn'" :class="`flex-1 border rounded-lg p-4 cursor-pointer ${paymentMethod === 'mtn' ? 'border-sky-500 bg-sky-50' : 'border-gray-300'
-                                    }`">
-                                    <div class="flex items-center justify-center h-16">
-                                        <!-- MTN MoMo Image -->
-                                        <img :src="imagePath('/img/mtn-momo.jpg')" alt="MoMo from MTN"
-                                            class="h-full object-contain rounded-lg">
-                                    </div>
-                                </div>
-
-                                <div @click="paymentMethod = 'airtel'" :class="`flex-1 border rounded-lg p-4 cursor-pointer ${paymentMethod === 'airtel' ? 'border-red-500 bg-red-50' : 'border-gray-300'
-                                    }`">
-                                    <div class="flex items-center justify-center h-16">
-                                        <!-- Airtel Money Image -->
-                                        <img :src="imagePath('/img/airtel-money.jpg')" alt="Airtel Money"
-                                            class="h-full object-contain rounded-lg">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-6">
-                            <label for="phone" class="block text-gray-700 mb-2">Nimero ya Telefoni</label>
-                            <input type="tel" id="phone" placeholder="07XXXXXXXX" v-model="phoneNumber"
-                                @input="validatePhoneNumber"
-                                :class="`w-full px-4 py-2 border rounded-lg focus:ring-sky-500 focus:border-sky-500 ${!isPhoneNumberValid ? 'border-red-500 bg-red-50' : 'border-gray-300'}`"
-                                required />
-                            <p v-if="phoneNumberError" class="mt-1 text-sm text-red-600">
-                                {{ phoneNumberError }}
-                            </p>
-                            <p v-else class="mt-1 text-sm text-gray-500">
-                                Andika nimero yawe ya telefoni ya {{ paymentMethod === 'mtn' ? 'MTN' : 'Airtel' }}
-                            </p>
-                        </div>
-
-                        <button type="submit"
-                            class="w-full bg-sky-500 text-white py-3 rounded-lg font-medium hover:bg-sky-600 transition"
-                            :disabled="paymentLoading || !isPhoneNumberValid">
-                            <span v-if="paymentLoading" class="flex items-center justify-center">
-                                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        stroke-width="4">
-                                    </circle>
-                                    <path class="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                                </svg>
-                                Birimo gutunganywa...
-                            </span>
-                            <span v-else>Ishyura {{ totalAmount }} RWF</span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-
+        <!-- Thank You Dialog -->
         <div v-if="showThankYou" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div class="bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 overflow-hidden animate-bounce-in">
                 <div class="p-6 text-center">
-                    <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 mb-6">
-                        <svg class="h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
+                        <svg class="h-10 w-10 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
 
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Ubwishyu Butegerejwe</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Murakoze gutora!</h3>
                     <p class="text-gray-600 mb-6">
-                        Ubutumwa bwo kwishyura bwoherejwe kuri telefoni yawe .
-                        komeza ubwishyu kugira ngo urangize gutora <strong>{{ selectedCandidate?.name
-                            }}</strong>.
+                        Ijwi ryawe ryakiriwe. Murakoze gutora <strong>{{ selectedCandidate?.name }}</strong> mu icyiciro
+                        <strong>{{ selectedCategory?.name }}</strong>. Amajwi {{ voteCount }} yanditswe.
                     </p>
 
-                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                        <p class="text-yellow-800 font-medium">
-                            Niba utahawe ubutumwa bugufi, kanda:
-                        </p>
-                        <p class="text-lg font-bold text-yellow-900 mt-2">
-                            *182*7*1*PIN#
-                        </p>
-                        <p class="text-xs text-yellow-700 mt-1">Simbuza PIN na kode yawe ya PIN ya {{ paymentMethod ===
-                            'mtn' ?
-                            'MTN Mobile Money' : 'Airtel Money' }}</p>
-                    </div>
-
-                    <div class="flex flex-col space-y-2">
-                        <span class="text-gray-500">Umubare w'Amafaranga</span>
-                        <span class="text-2xl font-bold text-blue-700">{{ totalAmount }} RWF</span>
-                    </div>
-
                     <button @click="() => { showThankYou = false; resetFormData(); }"
-                        class="mt-6 w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-medium hover:bg-gray-300 transition">
+                        class="mt-6 w-full bg-sky-500 text-white py-3 rounded-lg font-medium hover:bg-sky-600 transition">
                         Funga
                     </button>
                 </div>
             </div>
         </div>
-
-
-
 
     </PublicLayout>
 </template>
