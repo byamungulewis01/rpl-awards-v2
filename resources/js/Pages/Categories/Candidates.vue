@@ -76,17 +76,10 @@ const statsForm = useForm({
         goals: 0,
         assists: 0,
         appearances: 0,
-        cards: {
-            yellow: 0,
-            red: 0
-        },
-        awards: {
-            bestPlayer: false,
-            goalOfSeason: false,
-            coach: false,
-            youngPlayer: false
-        },
-        rating: 0
+        cleanSheets: 0,
+        wins: 0,
+        draws: 0,
+        losses: 0,
     }
 });
 
@@ -146,17 +139,10 @@ const openStatsDialog = (candidate) => {
             goals: candidate.stats.goals || 0,
             assists: candidate.stats.assists || 0,
             appearances: candidate.stats.appearances || 0,
-            cards: {
-                yellow: candidate.stats.cards?.yellow || 0,
-                red: candidate.stats.cards?.red || 0
-            },
-            awards: {
-                bestPlayer: candidate.stats.awards?.bestPlayer || false,
-                goalOfSeason: candidate.stats.awards?.goalOfSeason || false,
-                coach: candidate.stats.awards?.coach || false,
-                youngPlayer: candidate.stats.awards?.youngPlayer || false
-            },
-            rating: candidate.stats.rating || 0
+            cleanSheets: candidate.stats.cleanSheets || 0,
+            wins: candidate.stats.wins || 0,
+            draws: candidate.stats.draws || 0,
+            losses: candidate.stats.losses || 0,
         };
     } else {
         // Set default values
@@ -164,17 +150,11 @@ const openStatsDialog = (candidate) => {
             goals: 0,
             assists: 0,
             appearances: 0,
-            cards: {
-                yellow: 0,
-                red: 0
-            },
-            awards: {
-                bestPlayer: false,
-                goalOfSeason: false,
-                coach: false,
-                youngPlayer: false
-            },
-            rating: 0
+            cleanSheets: 0,
+            wins: 0,
+            draws: 0,
+            losses: 0,
+
         };
     }
 
@@ -335,6 +315,7 @@ const getAwardLabel = (candidate) => {
 </script>
 
 <template>
+
     <Head :title="`${category.name} Candidates`" />
 
     <AuthenticatedLayout>
@@ -361,7 +342,7 @@ const getAwardLabel = (candidate) => {
             </CardHeader>
             <CardContent>
                 <!-- Grid of Candidate Cards -->
-                <div v-if="sortedCandidates.length > 0" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div v-if="sortedCandidates.length > 0" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     <Card v-for="candidate in sortedCandidates" :key="candidate.id"
                         :class="{ 'opacity-60': candidate.status === 'inactive' }" class="rounded-none">
                         <CardHeader class="pb-2 space-y-0 p-3">
@@ -391,8 +372,7 @@ const getAwardLabel = (candidate) => {
                                 </div>
 
                                 <!-- Stats Badge -->
-                                <div
-                                    v-if="candidate.stats && candidate.stats.rating"
+                                <div v-if="candidate.stats && candidate.stats.rating"
                                     class="absolute bottom-2 right-2 bg-green-500 font-medium text-white text-xs px-2 py-1 rounded">
                                     {{ candidate.stats.rating }}/10
                                 </div>
@@ -400,7 +380,8 @@ const getAwardLabel = (candidate) => {
 
                             <div class="px-3 pb-3">
                                 <h3 class="font-medium text-md mb-1">{{ candidate.name }}</h3>
-                                <div v-if="candidate.stats" class="text-xs text-gray-500 grid grid-cols-2 gap-x-2 gap-y-1">
+                                <div v-if="candidate.stats"
+                                    class="text-xs text-gray-500 grid grid-cols-2 gap-x-2 gap-y-1">
                                     <div v-if="typeof candidate.stats.goals !== 'undefined'">
                                         <span class="font-medium">Goals:</span> {{ candidate.stats.goals }}
                                     </div>
@@ -410,6 +391,19 @@ const getAwardLabel = (candidate) => {
                                     <div v-if="typeof candidate.stats.appearances !== 'undefined'">
                                         <span class="font-medium">Apps:</span> {{ candidate.stats.appearances }}
                                     </div>
+                                    <div v-if="typeof candidate.stats.cleanSheets !== 'undefined'">
+                                        <span class="font-medium">Clean Sheets:</span> {{ candidate.stats.cleanSheets }}
+                                    </div>
+                                    <div v-if="typeof candidate.stats.wins !== 'undefined'">
+                                        <span class="font-medium">Wins:</span> {{ candidate.stats.wins }}
+                                    </div>
+                                    <div v-if="typeof candidate.stats.draws !== 'undefined'">
+                                        <span class="font-medium">Draws:</span> {{ candidate.stats.draws }}
+                                    </div>
+                                    <div v-if="typeof candidate.stats.losses !== 'undefined'">
+                                        <span class="font-medium">Losses:</span> {{ candidate.stats.losses }}
+                                    </div>
+
                                 </div>
                             </div>
                         </CardContent>
@@ -550,110 +544,50 @@ const getAwardLabel = (candidate) => {
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="grid gap-2">
                                     <Label for="goals">Goals</Label>
-                                    <Input
-                                        id="goals"
-                                        type="number"
-                                        v-model="statsForm.stats.goals"
-                                        min="0"
-                                        placeholder="0"
-                                    />
+                                    <Input id="goals" type="number" v-model="statsForm.stats.goals" min="0"
+                                        placeholder="0" />
                                 </div>
                                 <div class="grid gap-2">
                                     <Label for="assists">Assists</Label>
-                                    <Input
-                                        id="assists"
-                                        type="number"
-                                        v-model="statsForm.stats.assists"
-                                        min="0"
-                                        placeholder="0"
-                                    />
+                                    <Input id="assists" type="number" v-model="statsForm.stats.assists" min="0"
+                                        placeholder="0" />
                                 </div>
                                 <div class="grid gap-2">
                                     <Label for="appearances">Appearances</Label>
-                                    <Input
-                                        id="appearances"
-                                        type="number"
-                                        v-model="statsForm.stats.appearances"
-                                        min="0"
-                                        placeholder="0"
-                                    />
+                                    <Input id="appearances" type="number" v-model="statsForm.stats.appearances" min="0"
+                                        placeholder="0" />
                                 </div>
                                 <div class="grid gap-2">
-                                    <Label for="rating">Rating (0-10)</Label>
-                                    <Input
-                                        id="rating"
-                                        type="number"
-                                        v-model="statsForm.stats.rating"
-                                        min="0"
-                                        max="10"
-                                        step="0.1"
-                                        placeholder="0"
-                                    />
+                                    <Label for="cleanSheets">Clean Sheets</Label>
+                                    <Input id="cleanSheets" type="number" v-model="statsForm.stats.cleanSheets" min="0"
+                                        placeholder="0" />
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Cards Section -->
+                        <!-- Match Results Section -->
                         <div>
-                            <h3 class="text-lg font-medium mb-3">Cards</h3>
-                            <div class="grid grid-cols-2 gap-4">
+                            <h3 class="text-lg font-medium mb-3">Match Results</h3>
+                            <div class="grid grid-cols-3 gap-4">
                                 <div class="grid gap-2">
-                                    <Label for="yellow">Yellow Cards</Label>
-                                    <Input
-                                        id="yellow"
-                                        type="number"
-                                        v-model="statsForm.stats.cards.yellow"
-                                        min="0"
-                                        placeholder="0"
-                                    />
+                                    <Label for="wins">Wins</Label>
+                                    <Input id="wins" type="number" v-model="statsForm.stats.wins" min="0"
+                                        placeholder="0" />
                                 </div>
                                 <div class="grid gap-2">
-                                    <Label for="red">Red Cards</Label>
-                                    <Input
-                                        id="red"
-                                        type="number"
-                                        v-model="statsForm.stats.cards.red"
-                                        min="0"
-                                        placeholder="0"
-                                    />
+                                    <Label for="draws">Draws</Label>
+                                    <Input id="draws" type="number" v-model="statsForm.stats.draws" min="0"
+                                        placeholder="0" />
+                                </div>
+                                <div class="grid gap-2">
+                                    <Label for="losses">Losses</Label>
+                                    <Input id="losses" type="number" v-model="statsForm.stats.losses" min="0"
+                                        placeholder="0" />
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Awards Section -->
-                        <div>
-                            <h3 class="text-lg font-medium mb-3">Awards</h3>
-                            <div class="space-y-4">
-                                <div class="flex items-center space-x-2">
-                                    <Checkbox
-                                        id="bestPlayer"
-                                        v-model="statsForm.stats.awards.bestPlayer"
-                                    />
-                                    <Label for="bestPlayer">Best Player</Label>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <Checkbox
-                                        id="goalOfSeason"
-                                        v-model="statsForm.stats.awards.goalOfSeason"
-                                    />
-                                    <Label for="goalOfSeason">Goal of the Season</Label>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <Checkbox
-                                        id="coach"
-                                        v-model="statsForm.stats.awards.coach"
-                                    />
-                                    <Label for="coach">Coach of the Year</Label>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <Checkbox
-                                        id="youngPlayer"
-                                        v-model="statsForm.stats.awards.youngPlayer"
-                                    />
-                                    <Label for="youngPlayer">Young Player of the Year</Label>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
 
                     <DialogFooter>
