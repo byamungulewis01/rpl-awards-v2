@@ -7,6 +7,7 @@ import HeroWithCountdown from '@/Components/HeroWithCountdown.vue';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/Components/ui/dialog';
 import NewsSlider from '@/Components/NewsSlider.vue';
 import NewsArchive from '@/Components/NewsArchive.vue';
+import SponsorsSlider from '@/Components/SponsorsSlider.vue';
 
 const props = defineProps(
     {
@@ -14,7 +15,7 @@ const props = defineProps(
         news: {
             type: Array,
             required: true
-        }
+        },
     }
 )
 
@@ -172,8 +173,8 @@ const handleVoteSubmit = () => {
 
         <!-- <NewsArchive /> -->
 
-
-
+        <!-- Sponsors Section -->
+        <SponsorsSlider />
 
         <!-- Candidate Dialog using shadcn-vue Dialog component -->
         <Dialog :open="showCandidateDialog" @update:open="showCandidateDialog = $event">

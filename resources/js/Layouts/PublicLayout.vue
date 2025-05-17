@@ -36,7 +36,7 @@ const closeMenu = () => {
             </div>
 
             <!-- Desktop Navigation -->
-            <nav class="hidden md:flex items-center space-x-6">
+            <!-- <nav class="hidden md:flex items-center space-x-6">
                 <Link :href="route('welcome')" class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
                     Ahabanza
                 </Link>
@@ -49,7 +49,7 @@ const closeMenu = () => {
                 <Link :href="route('welcome') + '#contact-us'" class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
                     Twandikire
                 </Link>
-            </nav>
+            </nav> -->
 
             <!-- Auth / Logo -->
             <div class="hidden md:flex items-center space-x-4">
@@ -64,7 +64,7 @@ const closeMenu = () => {
             </div>
 
             <!-- Mobile menu button -->
-            <div class="md:hidden flex items-center">
+            <!-- <div class="md:hidden flex items-center">
                 <button @click="toggleMenu" class="text-gray-700 hover:text-sky-600 focus:outline-none">
                     <svg v-if="!isMenuOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
@@ -77,11 +77,11 @@ const closeMenu = () => {
                             d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-            </div>
+            </div> -->
         </div>
 
         <!-- Mobile menu -->
-        <div v-if="isMenuOpen"
+        <!-- <div v-if="isMenuOpen"
             class="md:hidden bg-white border-t border-gray-200 absolute w-full shadow-lg animate-fade-in-down z-30">
             <div class="px-4 py-2">
                 <div v-if="$page.props.auth?.user" class="py-3 border-b border-gray-200">
@@ -110,7 +110,7 @@ const closeMenu = () => {
                     </Link>
                 </div>
             </div>
-        </div>
+        </div> -->
     </header>
     <div class="min-h-screen bg-slate-50">
         <main class="">
@@ -129,15 +129,15 @@ const closeMenu = () => {
                 <div class="text-center md:text-right">
                     <p class="text-gray-300 text-sm mb-2">© 2025 Rwanda Premier League. All rights reserved.</p>
                     <div class="flex space-x-4 justify-center md:justify-end">
-                        <a href="#" class="text-gray-300 hover:text-white">
+                        <!-- <a href="#" class="text-gray-300 hover:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="lucide-facebook">
                                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z">
                                 </path>
                             </svg>
-                        </a>
-                        <a href="#" class="text-gray-300 hover:text-white">
+                        </a> -->
+                        <a href="https://x.com/rplawards" target="_blank" class="text-gray-300 hover:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="lucide-twitter">
@@ -146,7 +146,7 @@ const closeMenu = () => {
                                 </path>
                             </svg>
                         </a>
-                        <a href="#" class="text-gray-300 hover:text-white">
+                        <a href="https://www.instagram.com/rplawards/" target="_blank" class="text-gray-300 hover:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="lucide-instagram">
