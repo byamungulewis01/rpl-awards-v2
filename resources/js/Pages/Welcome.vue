@@ -202,75 +202,55 @@ const handleVoteSubmit = () => {
                             <!-- Player Stats Section -->
                             <div class="mb-6 bg-sky-50 p-4 rounded-lg">
                                 <!-- Player Stats -->
-                                <template v-if="selectedCategory?.id === 1">
-                                    <h4 class="font-medium text-gray-800 mb-3">Imibare y'Umukinnyi</h4>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div class="bg-white p-3 rounded shadow-sm">
-                                            <div class="text-sm text-gray-500">Ibitego</div>
-                                            <div class="text-xl font-bold text-sky-700">{{ selectedCandidate?.stats?.goals || '0' }}</div>
-                                        </div>
-                                        <div class="bg-white p-3 rounded shadow-sm">
-                                            <div class="text-sm text-gray-500">Assists</div>
-                                            <div class="text-xl font-bold text-sky-700">{{
-                                                selectedCandidate?.stats?.assists || '0' }}</div>
-                                        </div>
-                                        <div class="bg-white p-3 rounded shadow-sm">
-                                            <div class="text-sm text-gray-500">Imikino</div>
-                                            <div class="text-xl font-bold text-sky-700">{{
-                                                selectedCandidate?.stats?.matches || '0' }}</div>
-                                        </div>
-
+                                <h4 class="font-medium text-gray-800 mb-3">Imibare y'Umukandida (Statistics)</h4>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div v-if="selectedCandidate?.stats?.appearances"
+                                        class="bg-white p-3 rounded shadow-sm">
+                                        <div class="text-sm text-gray-500">Imikino</div>
+                                        <div class="text-xl font-bold text-sky-700">{{
+                                            selectedCandidate?.stats?.appearances || '0' }}</div>
                                     </div>
-                                </template>
-
-                                <!-- Coach Stats -->
-                                <template v-else-if="selectedCategory?.id === 3">
-                                    <h4 class="font-medium text-gray-800 mb-3">Imibare y'Umutoza</h4>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div class="bg-white p-3 rounded shadow-sm">
-                                            <div class="text-sm text-gray-500">Intsinzi</div>
-                                            <div class="text-xl font-bold text-sky-700">{{
-                                                selectedCandidate?.stats?.wins || '0' }}</div>
-                                        </div>
-                                        <div class="bg-white p-3 rounded shadow-sm">
-                                            <div class="text-sm text-gray-500">Uko Banganyije</div>
-                                            <div class="text-xl font-bold text-sky-700">{{
-                                                selectedCandidate?.stats?.draws || '0' }}</div>
-                                        </div>
-                                        <div class="bg-white p-3 rounded shadow-sm">
-                                            <div class="text-sm text-gray-500">Gutsindwa</div>
-                                            <div class="text-xl font-bold text-sky-700">{{
-                                                selectedCandidate?.stats?.losses || '0' }}</div>
-                                        </div>
-                                        <div class="bg-white p-3 rounded shadow-sm">
-                                            <div class="text-sm text-gray-500">Ijanisha ry'Intsinzi</div>
-                                            <div class="text-xl font-bold text-sky-700">{{
-                                                selectedCandidate?.stats?.winRate || '0' }}%</div>
+                                    <div v-if="selectedCandidate?.stats?.goals" class="bg-white p-3 rounded shadow-sm">
+                                        <div class="text-sm text-gray-500">Ibitego</div>
+                                        <div class="text-xl font-bold text-sky-700">{{ selectedCandidate?.stats?.goals
+                                            || '0' }}
                                         </div>
                                     </div>
-                                </template>
-
-                                <!-- Goal of the Season Stats -->
-                                <template v-else-if="selectedCategory?.id === 2">
-                                    <h4 class="font-medium text-gray-800 mb-3">Ibisobanuro by'Igitego</h4>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div class="bg-white p-3 rounded shadow-sm">
-                                            <div class="text-sm text-gray-500">Umukino</div>
-                                            <div class="text-xl font-bold text-sky-700">{{
-                                                selectedCandidate?.stats?.match || 'Ntabwo Ihari' }}</div>
-                                        </div>
-                                        <div class="bg-white p-3 rounded shadow-sm">
-                                            <div class="text-sm text-gray-500">Iminota</div>
-                                            <div class="text-xl font-bold text-sky-700">{{
-                                                selectedCandidate?.stats?.minute || 'Ntabwo Ihari' }}</div>
-                                        </div>
-                                        <div class="bg-white p-3 rounded shadow-sm col-span-2">
-                                            <div class="text-sm text-gray-500">Ubwoko bw'Igitego</div>
-                                            <div class="text-xl font-bold text-sky-700">{{
-                                                selectedCandidate?.stats?.goalType || 'Gisanzwe' }}</div>
-                                        </div>
+                                    <div v-if="selectedCandidate?.stats?.assists"
+                                        class="bg-white p-3 rounded shadow-sm">
+                                        <div class="text-sm text-gray-500">Assists</div>
+                                        <div class="text-xl font-bold text-sky-700">{{
+                                            selectedCandidate?.stats?.assists || '0' }}</div>
                                     </div>
-                                </template>
+
+                                    <div v-if="selectedCandidate?.stats?.wins"
+                                        class="bg-white p-3 rounded shadow-sm">
+                                        <div class="text-sm text-gray-500">Intsinzi</div>
+                                        <div class="text-xl font-bold text-sky-700">{{
+                                            selectedCandidate?.stats?.wins || '0' }}</div>
+                                    </div>
+                                    <div v-if="selectedCandidate?.stats?.draws"
+                                        class="bg-white p-3 rounded shadow-sm">
+                                        <div class="text-sm text-gray-500">Ukunganya</div>
+                                        <div class="text-xl font-bold text-sky-700">{{
+                                            selectedCandidate?.stats?.draws || '0' }}</div>
+                                    </div>
+                                    <div v-if="selectedCandidate?.stats?.losses"
+                                        class="bg-white p-3 rounded shadow-sm">
+                                        <div class="text-sm text-gray-500">Gutsindwa</div>
+                                        <div class="text-xl font-bold text-sky-700">{{
+                                            selectedCandidate?.stats?.losses || '0' }}</div>
+                                    </div>
+                                    <!-- cleanSheet -->
+                                    <div v-if="selectedCandidate?.stats?.cleanSheets"
+                                        class="bg-white p-3 rounded shadow-sm">
+                                        <div class="text-sm text-gray-500">Clean Sheet</div>
+                                        <div class="text-xl font-bold text-sky-700">{{
+                                            selectedCandidate?.stats?.cleanSheets || '0' }}</div>
+                                    </div>
+
+
+                                </div>
                             </div>
 
                             <!-- Error Alert - Adding this section to display errors -->

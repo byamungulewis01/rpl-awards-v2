@@ -26,6 +26,8 @@ class VotingController extends Controller
             }
         ])->get();
 
+        // return response()->json($categories);
+
         $news = News::take(3)->orderBy('created_at')->get();
 
         // Transform the data for frontend
@@ -41,6 +43,7 @@ class VotingController extends Controller
                         'image' => $candidate->image,
                         'code' => $candidate->code,
                         'order' => $candidate->order,
+                        'stats' => $candidate->stats,
                     ];
                 }),
             ];

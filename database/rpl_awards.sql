@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 17, 2025 at 08:58 AM
+-- Generation Time: May 17, 2025 at 10:23 AM
 -- Server version: 8.0.33
 -- PHP Version: 8.3.15
 
@@ -73,49 +73,49 @@ INSERT INTO `candidates` (`id`, `category_id`, `name`, `image`, `order`, `status
 (6, 3, 'MASHAMI. Vincent', 'candidates/lF0icxw317xE2CR8vpAPRJEpnMKf38ZBeZm8kRNe.jpg', 5, 'active', '{\"wins\": 10, \"draws\": 10, \"goals\": 0, \"losses\": 7, \"assists\": 0, \"appearances\": 27, \"cleanSheets\": 0}', '2025-04-30 10:40:10', '2025-05-17 06:55:18'),
 (8, 3, 'Roberto Oliveira', 'candidates/Rq6sN7AXxpoxjXx9paUWlmOB0BFpSoMz2gAlehN9.jpg', 2, 'active', '{\"wins\": 13, \"draws\": 7, \"goals\": 0, \"losses\": 2, \"assists\": 0, \"appearances\": 22, \"cleanSheets\": 0}', '2025-04-30 10:41:57', '2025-05-17 06:53:37'),
 (9, 3, 'MBARUSHIMANA Shaban', 'candidates/cStzc8HVqp2oML2G1reZ96tVccmd9brEmcz5ddML.jpg', 3, 'active', '{\"wins\": 13, \"draws\": 5, \"goals\": 0, \"losses\": 8, \"assists\": 0, \"appearances\": 26, \"cleanSheets\": 0}', '2025-04-30 10:43:15', '2025-05-17 06:54:21'),
-(12, 1, 'BIGIRIMANA Abedi', 'candidates/cfsmCk2B5YMQdeyEvaNN5Hx1JE7nZrEcoGFR5Ar7.jpg', 28, 'active', NULL, '2025-04-30 11:12:43', '2025-04-30 11:45:47'),
-(13, 1, 'AKAYEZU Jean Bosco', 'candidates/zdr7SbFY906XQrYnAl7KK4ik91KRhXDY4DwW5BRC.jpg', 24, 'active', NULL, '2025-04-30 11:13:16', '2025-04-30 11:13:16'),
-(14, 1, 'AKBAR Muderi', 'candidates/M6a8mQNRhJERIJpssYbtWmfIKxsdVR12ZSe1pkp7.jpg', 10, 'active', NULL, '2025-04-30 11:13:52', '2025-04-30 11:13:52'),
-(15, 1, 'ANI Elijah', 'candidates/QSK6NDMCWpNfSSW5kKic2OofQxMxSrKSx2HBrdHK.jpg', 29, 'active', NULL, '2025-04-30 11:14:41', '2025-04-30 11:45:47'),
-(16, 1, 'AGYENIM Boateng', 'candidates/pCXiQXX19DoyyMf2Xhl757yVTCnKLuSzDqnsttoE.jpg', 17, 'active', NULL, '2025-04-30 11:15:19', '2025-04-30 11:15:19'),
-(17, 1, 'BRIRINGIRO Gilbert', 'candidates/I7LQkgKdBtGnwL3bbw9j5Tj9YBQ50DvgVCdLJbp6.jpg', 23, 'active', NULL, '2025-04-30 11:15:53', '2025-04-30 11:26:04'),
+(12, 1, 'SEBWATO Nicholas', 'candidates/1747474321_sebwato.jpg', 28, 'active', NULL, '2025-04-30 11:12:43', '2025-05-17 07:32:01'),
+(13, 1, 'IRAGUHA Hadji', 'candidates/1747474242_IRAGUHA Hadji.jpeg', 24, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 5, \"losses\": 0, \"assists\": 3, \"appearances\": 15, \"cleanSheets\": 0}', '2025-04-30 11:13:16', '2025-05-17 08:06:41'),
+(14, 1, 'CHEIK DJIBRIL Quattara', 'candidates/1747474017_Cheik DJIBRIL OUATTARA.jpeg', 10, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 9, \"losses\": 0, \"assists\": 0, \"appearances\": 7, \"cleanSheets\": 0}', '2025-04-30 11:13:52', '2025-05-17 07:54:42'),
+(15, 1, 'MUGISHA Didier', 'candidates/1747474370_mugisha didier.jpg', 29, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 5, \"losses\": 0, \"assists\": 5, \"appearances\": 20, \"cleanSheets\": 0}', '2025-04-30 11:14:41', '2025-05-17 08:10:23'),
+(16, 1, 'AGYENIM Boateng Mensah', 'candidates/pCXiQXX19DoyyMf2Xhl757yVTCnKLuSzDqnsttoE.jpg', 17, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 6, \"losses\": 0, \"assists\": 6, \"appearances\": 25, \"cleanSheets\": 0}', '2025-04-30 11:15:19', '2025-05-17 08:02:10'),
+(17, 1, 'BRIRINGIRO Gilbert', 'candidates/I7LQkgKdBtGnwL3bbw9j5Tj9YBQ50DvgVCdLJbp6.jpg', 23, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 0, \"appearances\": 22, \"cleanSheets\": 0}', '2025-04-30 11:15:53', '2025-05-17 08:06:04'),
 (18, 1, 'DAUDA Yussif Seidu', 'candidates/1oB2K8ih9vsmOMpVUbyLHo0bl1cmNLVyTyqYzsZR.jpg', 26, 'active', NULL, '2025-04-30 11:16:36', '2025-04-30 11:16:36'),
-(19, 1, 'FALL Ngagne', 'candidates/U7k0NCY2C8MG0jO6YgYWDpdSwQFaFquQelHGH0ZV.jpg', 1, 'active', NULL, '2025-04-30 11:17:02', '2025-04-30 11:17:34'),
-(20, 1, 'FRANKLIN Onyeabor', 'candidates/o4Wf9MgXNL1pLHZk2eCelzzZNwBZTs91AJPOcjn1.jpg', 25, 'active', NULL, '2025-04-30 11:18:20', '2025-04-30 11:18:20'),
-(21, 1, 'HABIMANA Yves', 'candidates/i3Mj9xeF1sWYbCme4WVxkhmQ52cE6q5kDU2JM3Ld.jpg', 8, 'active', NULL, '2025-04-30 11:18:45', '2025-04-30 11:18:45'),
-(22, 1, 'JORDAN DIBUMBA Nzao', 'candidates/Mkkkx5wSbMJhDz83Q366DmdmMrUGnspqDi6yULcO.jpg', 18, 'active', NULL, '2025-04-30 11:19:27', '2025-04-30 11:19:27'),
-(23, 1, 'JOSEPH Sackey', 'candidates/wnrZVb7gQMplqTbJpGzCxwgwvEADFCFtffjHrXHH.jpg', 20, 'active', NULL, '2025-04-30 11:25:40', '2025-04-30 11:25:51'),
-(24, 1, 'KHADIME Ndiaye', 'candidates/XmHq1RIlp6BjzUJVYTKCbLPthqAi4Xtq7r5zurXo.jpg', 14, 'active', NULL, '2025-04-30 11:29:52', '2025-04-30 11:30:00'),
-(25, 1, 'MASUDI Narcisse', 'candidates/XMDze7kygN2CmD1i5wQume84uuOguuezRfbOhTQm.jpg', 16, 'active', NULL, '2025-04-30 11:30:32', '2025-04-30 11:30:32'),
-(26, 1, 'MUHIRE Kevin', 'candidates/j1cbqBaIwSta4O5y7XGuFvP49QYaSz6MrtXtaZLO.jpg', 2, 'active', NULL, '2025-04-30 11:31:16', '2025-04-30 11:31:16'),
-(27, 1, 'MSANGA Henry', 'candidates/ZUH2GLTlCUhf0OyzIUeXWBebqfOI1xFd6AyV5b6q.jpg', 12, 'active', NULL, '2025-04-30 11:32:45', '2025-04-30 11:32:45'),
-(28, 1, 'NDAYISHIMIYE Richard', 'candidates/1F1dmGMqZQHOLM2vXCD5XI8jQC4BDBc8MbuIY0at.jpg', 22, 'active', NULL, '2025-04-30 11:33:28', '2025-04-30 11:33:28'),
-(29, 1, 'NIYIGENA Clement', 'candidates/pMaVkVjiFyt074XefsoCoZCsCfLIQPJQjOKx6XlK.jpg', 4, 'active', NULL, '2025-04-30 11:34:00', '2025-04-30 11:34:00'),
-(30, 1, 'NIYOMUGABO Cloude', 'candidates/WzaxKMMaiy66FMRbJY5iffSrv2K3TFm5iOmztblU.jpg', 13, 'active', NULL, '2025-04-30 11:34:33', '2025-04-30 11:34:33'),
-(31, 1, 'EMMANUEL Okwi', 'candidates/DSeAms07hMuk8HVBmdmR2X4SJHQOu0e7UXipxH56.jpg', 7, 'active', NULL, '2025-04-30 11:35:29', '2025-04-30 11:35:29'),
-(32, 1, 'ISHIMWE Jean Pierre', 'candidates/BG9xk6hGxllVajrEG50sJjdQb3KQBpcOzLWdtAIz.jpg', 15, 'active', NULL, '2025-04-30 11:35:58', '2025-04-30 11:35:58'),
-(33, 1, 'POTTY MASIMANGO Fiston', 'candidates/falJiroIqoenV9cFRCjwjITs9BM9eTWecfQmv4Yw.jpg', 11, 'active', NULL, '2025-04-30 11:36:51', '2025-04-30 11:36:51'),
-(34, 1, 'RUBONEKA Jean Bosco', 'candidates/MsJyYu6pxDAEbpbUB9fI77fEKIBut9DKj8YwQDmv.jpg', 3, 'active', NULL, '2025-04-30 11:37:51', '2025-04-30 11:37:51'),
-(35, 1, 'USENI Seraphin', 'candidates/kj54WIvwvITua0N6DltcMktifNYRc1tRQoCcbAnK.jpg', 5, 'active', NULL, '2025-04-30 11:38:35', '2025-04-30 11:38:35'),
-(36, 1, 'SUNDAY Inemesit', 'candidates/13SmGhoOa4JyOfEuQpCsmQy0W7DW5wL2qypSiJi2.jpg', 19, 'active', NULL, '2025-04-30 11:39:11', '2025-04-30 11:39:11'),
-(37, 1, 'UMAR Abba', 'candidates/XIiQXZxyEStUyzoqHbFb5JNv5HcY5xgazjrygEPZ.jpg', 6, 'active', NULL, '2025-04-30 11:39:45', '2025-04-30 11:39:45'),
-(38, 1, 'USABIMANA olivier', 'candidates/b57T0JfiLiAjBuDGajQUv9nnxdl76HJHfPxhRuVn.jpg', 9, 'active', NULL, '2025-04-30 11:40:11', '2025-04-30 11:40:11'),
-(39, 1, 'UWAMUKIZA Obed', 'candidates/wrQ3PLBZ6pl3E63WNu1Py7sX33d0Vmmd1Q9xHAaT.jpg', 27, 'active', NULL, '2025-04-30 11:41:06', '2025-04-30 11:45:52'),
-(40, 1, 'VICTOR Murdah', 'candidates/jY9BrWcoEUpftPCa083UnyfHDYsHJUAauxWSTEsq.jpg', 30, 'active', NULL, '2025-04-30 11:42:29', '2025-04-30 11:42:29'),
-(41, 1, 'youssuou DIAGNE', 'candidates/wM086DqLZ7MJ4LIJwskBl5RCJW65ASavVwDrxJVD.jpg', 21, 'active', NULL, '2025-04-30 11:43:27', '2025-04-30 11:43:27'),
-(45, 4, 'ADAMA Bagayogo', 'candidates/1747467699_WhatsApp Image 2025-05-16 at 20.21.30.jpeg', 7, 'active', NULL, '2025-05-17 05:41:39', '2025-05-17 05:46:21'),
-(46, 4, 'MUTUNZI Darcy', 'candidates/1747467733_WhatsApp Image 2025-05-16 at 20.21.31 (1).jpeg', 1, 'active', NULL, '2025-05-17 05:42:13', '2025-05-17 05:43:49'),
-(47, 4, 'HABIMANA Fils Francois', 'candidates/1747467762_WhatsApp Image 2025-05-16 at 20.21.31.jpeg', 6, 'active', NULL, '2025-05-17 05:42:42', '2025-05-17 05:46:21'),
-(48, 4, 'NIYO David', 'candidates/1747467784_WhatsApp Image 2025-05-16 at 20.21.32 (1).jpeg', 2, 'active', NULL, '2025-05-17 05:43:04', '2025-05-17 05:43:54'),
-(49, 4, 'NDAYISHIMIYE Didier', 'candidates/1747467823_WhatsApp Image 2025-05-16 at 20.21.32.jpeg', 8, 'active', NULL, '2025-05-17 05:43:43', '2025-05-17 05:46:13'),
-(50, 4, 'POTTY Masimango Fiston', 'candidates/1747467868_WhatsApp Image 2025-05-16 at 20.21.33.jpeg', 4, 'active', NULL, '2025-05-17 05:44:28', '2025-05-17 05:46:10'),
-(51, 4, 'SULTAN Bob', 'candidates/1747467891_WhatsApp Image 2025-05-16 at 20.21.34 (1).jpeg', 3, 'active', NULL, '2025-05-17 05:44:51', '2025-05-17 05:46:00'),
-(52, 4, 'USENI Seraphin', 'candidates/1747467909_WhatsApp Image 2025-05-16 at 20.21.34.jpeg', 5, 'active', NULL, '2025-05-17 05:45:09', '2025-05-17 05:46:18'),
-(53, 5, 'IBRAHIMA DAUDA Baleri', 'candidates/1747471683_baleri.jpg', 1, 'active', NULL, '2025-05-17 06:48:03', '2025-05-17 06:48:03'),
-(54, 5, 'KHADIME Ndiaye', 'candidates/1747471704_Khadime NDIAYE.jpg', 2, 'active', NULL, '2025-05-17 06:48:24', '2025-05-17 06:48:24'),
-(55, 5, 'MUHAWENAYO Gad', 'candidates/1747471727_MUHAWENAYO Gad – Gorilla.jpeg', 3, 'active', NULL, '2025-05-17 06:48:47', '2025-05-17 06:48:47'),
-(56, 5, 'PAVELH Ndzila', 'candidates/1747471757_pavel.jpg', 4, 'active', NULL, '2025-05-17 06:49:17', '2025-05-17 06:49:17'),
-(57, 5, 'SEBWATO Nicholas', 'candidates/1747471789_sebwato.jpg', 5, 'active', NULL, '2025-05-17 06:49:49', '2025-05-17 06:49:49');
+(19, 1, 'FALL Ngagne', 'candidates/U7k0NCY2C8MG0jO6YgYWDpdSwQFaFquQelHGH0ZV.jpg', 1, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 13, \"losses\": 0, \"assists\": 1, \"appearances\": 13, \"cleanSheets\": 0}', '2025-04-30 11:17:02', '2025-05-17 07:48:21'),
+(20, 1, 'SHERIF Bayo', 'candidates/1747474280_sherif bayo.jpg', 25, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 3, \"losses\": 0, \"assists\": 3, \"appearances\": 17, \"cleanSheets\": 0}', '2025-04-30 11:18:20', '2025-05-17 08:07:05'),
+(21, 1, 'HABIMANA Yves', 'candidates/i3Mj9xeF1sWYbCme4WVxkhmQ52cE6q5kDU2JM3Ld.jpg', 8, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 8, \"losses\": 0, \"assists\": 6, \"appearances\": 22, \"cleanSheets\": 0}', '2025-04-30 11:18:45', '2025-05-17 07:52:39'),
+(22, 1, 'JORDAN DIBUMBA Nzao', 'candidates/Mkkkx5wSbMJhDz83Q366DmdmMrUGnspqDi6yULcO.jpg', 18, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 5, \"losses\": 0, \"assists\": 1, \"appearances\": 22, \"cleanSheets\": 0}', '2025-04-30 11:19:27', '2025-05-17 08:02:37'),
+(23, 1, 'JOSEPH Sackey', 'candidates/wnrZVb7gQMplqTbJpGzCxwgwvEADFCFtffjHrXHH.jpg', 20, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 3, \"losses\": 0, \"assists\": 4, \"appearances\": 25, \"cleanSheets\": 0}', '2025-04-30 11:25:40', '2025-05-17 08:03:35'),
+(24, 1, 'KHADIME Ndiaye', 'candidates/XmHq1RIlp6BjzUJVYTKCbLPthqAi4Xtq7r5zurXo.jpg', 14, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 0, \"appearances\": 20, \"cleanSheets\": 13}', '2025-04-30 11:29:52', '2025-05-17 07:57:52'),
+(25, 1, 'MASUDI Narcisse', 'candidates/XMDze7kygN2CmD1i5wQume84uuOguuezRfbOhTQm.jpg', 16, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 3, \"losses\": 0, \"assists\": 8, \"appearances\": 25, \"cleanSheets\": 0}', '2025-04-30 11:30:32', '2025-05-17 08:00:40'),
+(26, 1, 'MUHIRE Kevin', 'candidates/j1cbqBaIwSta4O5y7XGuFvP49QYaSz6MrtXtaZLO.jpg', 2, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 1, \"losses\": 0, \"assists\": 13, \"appearances\": 23, \"cleanSheets\": 0}', '2025-04-30 11:31:16', '2025-05-17 07:48:44'),
+(27, 1, 'MSANGA Henry', 'candidates/ZUH2GLTlCUhf0OyzIUeXWBebqfOI1xFd6AyV5b6q.jpg', 12, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 4, \"losses\": 0, \"assists\": 4, \"appearances\": 25, \"cleanSheets\": 0}', '2025-04-30 11:32:45', '2025-05-17 07:56:24'),
+(28, 1, 'NDAYISHIMIYE Richard', 'candidates/1F1dmGMqZQHOLM2vXCD5XI8jQC4BDBc8MbuIY0at.jpg', 22, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 3, \"appearances\": 23, \"cleanSheets\": 0}', '2025-04-30 11:33:28', '2025-05-17 08:04:56'),
+(29, 1, 'NIYIGENA Clement', 'candidates/pMaVkVjiFyt074XefsoCoZCsCfLIQPJQjOKx6XlK.jpg', 4, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 3, \"losses\": 0, \"assists\": 0, \"appearances\": 27, \"cleanSheets\": 0}', '2025-04-30 11:34:00', '2025-05-17 07:47:50'),
+(30, 1, 'NIYOMUGABO Cloude', 'candidates/WzaxKMMaiy66FMRbJY5iffSrv2K3TFm5iOmztblU.jpg', 13, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 0, \"appearances\": 27, \"cleanSheets\": 0}', '2025-04-30 11:34:33', '2025-05-17 07:57:02'),
+(31, 1, 'EMMANUEL Okwi', 'candidates/DSeAms07hMuk8HVBmdmR2X4SJHQOu0e7UXipxH56.jpg', 7, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 8, \"losses\": 0, \"assists\": 1, \"appearances\": 23, \"cleanSheets\": 0}', '2025-04-30 11:35:29', '2025-05-17 07:51:41'),
+(32, 1, 'PAVELH Ndzila', 'candidates/1747474083_pavel.jpg', 15, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 0, \"appearances\": 16, \"cleanSheets\": 11}', '2025-04-30 11:35:58', '2025-05-17 07:59:55'),
+(33, 1, 'POTTY MASIMANGO Fiston', 'candidates/falJiroIqoenV9cFRCjwjITs9BM9eTWecfQmv4Yw.jpg', 11, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 3, \"losses\": 0, \"assists\": 4, \"appearances\": 12, \"cleanSheets\": 0}', '2025-04-30 11:36:51', '2025-05-17 07:55:14'),
+(34, 1, 'RUBONEKA Jean Bosco', 'candidates/MsJyYu6pxDAEbpbUB9fI77fEKIBut9DKj8YwQDmv.jpg', 3, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 2, \"losses\": 0, \"assists\": 0, \"appearances\": 24, \"cleanSheets\": 0}', '2025-04-30 11:37:51', '2025-05-17 07:47:28'),
+(35, 1, 'USENI Seraphin', 'candidates/kj54WIvwvITua0N6DltcMktifNYRc1tRQoCcbAnK.jpg', 5, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 11, \"losses\": 0, \"assists\": 8, \"appearances\": 23, \"cleanSheets\": 0}', '2025-04-30 11:38:35', '2025-05-17 07:49:48'),
+(36, 1, 'NSHIMIYIMANA Yunusu', 'candidates/1747474131_YUNUSU.jpg', 19, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 0, \"appearances\": 21, \"cleanSheets\": 0}', '2025-04-30 11:39:11', '2025-05-17 08:03:03'),
+(37, 1, 'UMAR Abba', 'candidates/XIiQXZxyEStUyzoqHbFb5JNv5HcY5xgazjrygEPZ.jpg', 6, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 13, \"losses\": 0, \"assists\": 4, \"appearances\": 20, \"cleanSheets\": 0}', '2025-04-30 11:39:45', '2025-05-17 07:50:26'),
+(38, 1, 'USABIMANA olivier', 'candidates/b57T0JfiLiAjBuDGajQUv9nnxdl76HJHfPxhRuVn.jpg', 9, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 8, \"losses\": 0, \"assists\": 7, \"appearances\": 25, \"cleanSheets\": 0}', '2025-04-30 11:40:11', '2025-05-17 07:53:43'),
+(39, 1, 'UWAMUKIZA Obed', 'candidates/wrQ3PLBZ6pl3E63WNu1Py7sX33d0Vmmd1Q9xHAaT.jpg', 27, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 4, \"appearances\": 21, \"cleanSheets\": 0}', '2025-04-30 11:41:06', '2025-05-17 08:08:52'),
+(40, 1, 'NDUWIMANA Franck', 'candidates/1747474400_franck nduwimana.jpg', 30, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 3, \"losses\": 0, \"assists\": 3, \"appearances\": 27, \"cleanSheets\": 0}', '2025-04-30 11:42:29', '2025-05-17 08:11:13'),
+(41, 1, 'youssuou DIAGNE', 'candidates/wM086DqLZ7MJ4LIJwskBl5RCJW65ASavVwDrxJVD.jpg', 21, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 3, \"losses\": 0, \"assists\": 0, \"appearances\": 20, \"cleanSheets\": 0}', '2025-04-30 11:43:27', '2025-05-17 08:04:20'),
+(45, 4, 'ADAMA Bagayogo', 'candidates/1747467699_WhatsApp Image 2025-05-16 at 20.21.30.jpeg', 7, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 5, \"losses\": 0, \"assists\": 4, \"appearances\": 22, \"cleanSheets\": 0}', '2025-05-17 05:41:39', '2025-05-17 07:42:59'),
+(46, 4, 'MUTUNZI Darcy', 'candidates/1747467733_WhatsApp Image 2025-05-16 at 20.21.31 (1).jpeg', 1, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 5, \"losses\": 0, \"assists\": 3, \"appearances\": 11, \"cleanSheets\": 0}', '2025-05-17 05:42:13', '2025-05-17 07:43:33'),
+(47, 4, 'HABIMANA Fils Francois', 'candidates/1747467762_WhatsApp Image 2025-05-16 at 20.21.31.jpeg', 6, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 0, \"appearances\": 12, \"cleanSheets\": 6}', '2025-05-17 05:42:42', '2025-05-17 07:45:30'),
+(48, 4, 'NIYO David', 'candidates/1747467784_WhatsApp Image 2025-05-16 at 20.21.32 (1).jpeg', 2, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 1, \"losses\": 0, \"assists\": 7, \"appearances\": 12, \"cleanSheets\": 0}', '2025-05-17 05:43:04', '2025-05-17 07:45:56'),
+(49, 4, 'NDAYISHIMIYE Didier', 'candidates/1747467823_WhatsApp Image 2025-05-16 at 20.21.32.jpeg', 8, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 2, \"losses\": 0, \"assists\": 3, \"appearances\": 26, \"cleanSheets\": 0}', '2025-05-17 05:43:43', '2025-05-17 07:44:00'),
+(50, 4, 'POTTY Masimango Fiston', 'candidates/1747467868_WhatsApp Image 2025-05-16 at 20.21.33.jpeg', 4, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 3, \"losses\": 0, \"assists\": 4, \"appearances\": 12, \"cleanSheets\": 0}', '2025-05-17 05:44:28', '2025-05-17 07:44:26'),
+(51, 4, 'SULTAN Bob', 'candidates/1747467891_WhatsApp Image 2025-05-16 at 20.21.34 (1).jpeg', 3, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 0, \"appearances\": 12, \"cleanSheets\": 6}', '2025-05-17 05:44:51', '2025-05-17 07:46:15'),
+(52, 4, 'USENI Seraphin', 'candidates/1747467909_WhatsApp Image 2025-05-16 at 20.21.34.jpeg', 5, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 11, \"losses\": 0, \"assists\": 8, \"appearances\": 13, \"cleanSheets\": 0}', '2025-05-17 05:45:09', '2025-05-17 07:42:38'),
+(53, 5, 'IBRAHIMA DAUDA Baleri', 'candidates/1747471683_baleri.jpg', 5, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 0, \"appearances\": 27, \"cleanSheets\": 11}', '2025-05-17 06:48:03', '2025-05-17 07:41:11'),
+(54, 5, 'KHADIME Ndiaye', 'candidates/1747471704_Khadime NDIAYE.jpg', 3, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 0, \"appearances\": 20, \"cleanSheets\": 13}', '2025-05-17 06:48:24', '2025-05-17 07:40:35'),
+(55, 5, 'MUHAWENAYO Gad', 'candidates/1747471727_MUHAWENAYO Gad – Gorilla.jpeg', 4, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 0, \"appearances\": 24, \"cleanSheets\": 12}', '2025-05-17 06:48:47', '2025-05-17 07:40:53'),
+(56, 5, 'PAVELH Ndzila', 'candidates/1747471757_pavel.jpg', 1, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 0, \"appearances\": 16, \"cleanSheets\": 11}', '2025-05-17 06:49:17', '2025-05-17 07:40:06'),
+(57, 5, 'SEBWATO Nicholas', 'candidates/1747471789_sebwato.jpg', 2, 'active', '{\"wins\": 0, \"draws\": 0, \"goals\": 0, \"losses\": 0, \"assists\": 2, \"appearances\": 24, \"cleanSheets\": 13}', '2025-05-17 06:49:49', '2025-05-17 07:40:24');
 
 -- --------------------------------------------------------
 
@@ -138,10 +138,10 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `league`, `name`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'men', 'Umukinnyi mwiza wa shampiyona', 'Umukinnyi mwiza wa shampiyona', 'active', '2025-04-30 09:53:16', '2025-05-03 14:38:54'),
-(3, 'men', 'Umutoza mwiza', 'Umutoza mwiza', 'active', '2025-04-30 09:53:50', '2025-05-03 14:41:29'),
-(4, 'men', 'Umukinnyi mwiza ukiri muto', 'Umukinnyi mwiza ukiri muto', 'active', '2025-04-30 09:54:17', '2025-05-03 14:40:41'),
-(5, 'men', 'Umunyezamu mwiza', 'Umunyezamu mwiza', 'active', '2025-04-30 09:54:29', '2025-05-03 14:41:04');
+(1, 'men', 'Umukinnyi mwiza w\'umwaka', 'Umukinnyi mwiza w\'umwaka', 'active', '2025-04-30 09:53:16', '2025-05-17 07:24:48'),
+(3, 'men', 'Umutoza mwiza w\'umwaka', 'Umutoza mwiza w\'umwaka', 'active', '2025-04-30 09:53:50', '2025-05-17 07:25:21'),
+(4, 'men', 'Umukinnyi muto w\'umwaka', 'Umukinnyi muto w\'umwaka', 'active', '2025-04-30 09:54:17', '2025-05-17 07:25:41'),
+(5, 'men', 'Umunyezamu mwiza w\'umwaka', 'Umunyezamu mwiza w\'umwaka', 'active', '2025-04-30 09:54:29', '2025-05-17 07:25:04');
 
 -- --------------------------------------------------------
 
@@ -336,7 +336,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('xlHFM0Q63tXWuTARdZoNlwZCoNXhhu27GEte0Kr1', 1, '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiTHhBSUNDQjhhRTI5TnZxaHAwczl4WEpaUGRwZGdaMGhHWU1kdjJFTSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly9ycGwtYXdhcmRzLXYyLnRlc3QvbG9naW4iO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1747472202);
+('HZa1iKnz4N0pu2ID7U9hKgzuAfzAN3LtFhWCFutb', NULL, '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiWnZzNXVtclFZOWltbjZyRkdiNzVRSWNNOXRQMm5HWjFJcXdNcXJkMiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1747477362);
 
 -- --------------------------------------------------------
 
@@ -385,7 +385,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `phone`, `role`, `status`, `email_verified_at`, `password`, `last_login`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'BYAMUNGU Lewis', 'byamungulewis@gmail.com', '0785436135', 'super_admin', 'active', '2025-04-27 05:29:07', '$2y$12$agIcW8GRsLUNNOoQJKQ9..Xnj5rM6i6bn94zwCQyw00ug70efW1kS', '2025-05-17 06:54:59', 'VEpvB673TSnHe9XcFujMRuxCin8Hvqzmrvr5eRGyMlMuEuhqXv39rGLTO4t0', '2025-04-27 05:29:08', '2025-05-17 06:54:59'),
+(1, 'BYAMUNGU Lewis', 'byamungulewis@gmail.com', '0785436135', 'super_admin', 'active', '2025-04-27 05:29:07', '$2y$12$agIcW8GRsLUNNOoQJKQ9..Xnj5rM6i6bn94zwCQyw00ug70efW1kS', '2025-05-17 08:11:13', 'rDk0qrsXhdv4pjLYadXp2GyaQux4Wwf4vmTnecfsdMWNZZze2RKHjMWpIacL', '2025-04-27 05:29:08', '2025-05-17 08:11:13'),
 (3, 'Kylie Ayers', 'duziqymem@mailinator.com', '+1 (317) 114-8376', 'admin', 'active', NULL, '$2y$12$VjyWZTfm5lIy.GU/gM/dVuo4M0soUTgsyi2ZSD.zsFtZLGX6GWV4a', NULL, NULL, '2025-04-27 05:39:44', '2025-04-27 05:39:44'),
 (4, 'Sigourney Waller', 'lusihuje@mailinator.com', '+1 (273) 518-1257', 'inspector', 'inactive', NULL, '$2y$12$n.lydz2zjsknpp.cvIVYZ.pu0CZzNR1gvdzsUybflPLsxirF3dldy', NULL, NULL, '2025-04-27 05:39:50', '2025-04-30 08:21:11'),
 (6, 'Ginger Morales', 'tafoxadu@mailinator.com', '+1 (673) 674-9352', 'admin', 'active', NULL, '$2y$12$Mc4mPRI7HjGjRtT7iEWkWeXwAYmMnZw8wWudqS4AlT7zwemHnYROy', NULL, NULL, '2025-04-27 06:04:00', '2025-04-27 06:04:00'),
