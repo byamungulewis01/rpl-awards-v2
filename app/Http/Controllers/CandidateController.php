@@ -21,7 +21,6 @@ class CandidateController extends Controller
                 'order' => 'required|integer|min:1',
                 'status' => 'required|in:active,inactive',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'stats' => 'nullable|array',
             ]);
 
             // Handle image upload
@@ -60,7 +59,6 @@ class CandidateController extends Controller
                 'order' => 'required|integer|min:1',
                 'status' => 'required|in:active,inactive',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'stats' => 'nullable|array',
             ]);
 
 
