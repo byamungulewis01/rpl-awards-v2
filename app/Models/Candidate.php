@@ -20,10 +20,12 @@ class Candidate extends Model
         'image',
         'order',
         'status',
+        'stats',
     ];
 
     protected $casts = [
         'order' => 'integer',
+        'stats' => 'array',
     ];
 
     /**

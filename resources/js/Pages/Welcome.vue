@@ -7,10 +7,10 @@ import HeroWithCountdown from '@/Components/HeroWithCountdown.vue';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/Components/ui/dialog';
 import NewsSlider from '@/Components/NewsSlider.vue';
 import NewsArchive from '@/Components/NewsArchive.vue';
+
 const props = defineProps(
     {
         categories: Array,
-        vote_amount: Number,
         news: {
             type: Array,
             required: true
@@ -21,36 +21,25 @@ const props = defineProps(
 // State management for categories, candidates and votes
 const categories = ref(props.categories || []);
 const loading = ref(false);
-const voteCount = ref(1);
-const totalAmount = ref(props.vote_amount);
 const selectedCandidate = ref(null);
 const showThankYou = ref(false);
 const selectedCategory = ref(null);
 const showCandidateDialog = ref(false);
+const voteError = ref(null); // Add this to track vote errors
 
 // Set default category if available
 if (categories.value.length > 0) {
     selectedCategory.value = categories.value[0];
 }
 
-// Update total amount when vote count changes
-watch(voteCount, (newCount) => {
-    totalAmount.value = newCount * props.vote_amount;
-});
-
 const handleCategorySelect = (category) => {
     selectedCategory.value = category;
     selectedCandidate.value = null;
-    voteCount.value = 1;
-};
-
-const handleVoteChange = (value) => {
-    const newCount = Math.min(Math.max(1, voteCount.value + value), 100);
-    voteCount.value = newCount;
 };
 
 const handleCandidateSelect = (candidate) => {
     selectedCandidate.value = candidate;
+    voteError.value = null; // Clear any previous errors
     showCandidateDialog.value = true;
 };
 
@@ -58,42 +47,44 @@ const handleCandidateSelect = (candidate) => {
 const form = useForm({
     candidateId: '',
     categoryId: '',
-    votes: 1,
 });
 
 const resetFormData = () => {
     // Reset form inputs
-    voteCount.value = 1;
     form.categoryId = '';
-    totalAmount.value = props.vote_amount;
-
+    form.candidateId = '';
+    voteError.value = null; // Clear errors when resetting form
     // Reset Inertia form
     form.reset();
 };
 
 const handleVoteSubmit = () => {
+    // Clear any previous errors
+    voteError.value = null;
+
     // Update form data
     form.candidateId = selectedCandidate.value.id;
     form.categoryId = selectedCategory.value.id;
-    form.votes = voteCount.value;
-
-
-    showCandidateDialog.value = false;
-    showThankYou.value = true;
-    // resetFormData();
 
     // Submit the form
-    // form.post(route('voting.process'), {
-    //     preserveScroll: true,
-    //     onSuccess: () => {
-    //         showCandidateDialog.value = false;
-    //         showThankYou.value = true;
-    //         resetFormData();
-    //     },
-    //     onError: () => {
-    //         // Handle errors if needed
-    //     }
-    // });
+    form.post(route('voting.process'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            showCandidateDialog.value = false;
+            showThankYou.value = true;
+            resetFormData();
+        },
+        onError: (errors) => {
+            // Set the error message from the response
+            if (errors.duplicate) {
+                voteError.value = errors.duplicate;
+            } else if (errors.error) {
+                voteError.value = errors.error;
+            } else {
+                voteError.value = 'Hari ikibazo cyabaye. Ongera ugerageze.';
+            }
+        }
+    });
 };
 
 </script>
@@ -104,7 +95,7 @@ const handleVoteSubmit = () => {
     <PublicLayout title="Vote for the best in Rwandan football">
 
         <HeroWithCountdown :targetDate="new Date('2025-05-30')" :votePrice="200" />
-        <NewsSlider :news="news" />
+        <!-- <NewsSlider :news="news" /> -->
         <!-- Categories and Voting Section -->
         <div id="categories" class="bg-gray-50 py-12">
             <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
@@ -216,8 +207,7 @@ const handleVoteSubmit = () => {
                                     <div class="grid grid-cols-2 gap-4">
                                         <div class="bg-white p-3 rounded shadow-sm">
                                             <div class="text-sm text-gray-500">Ibitego</div>
-                                            <div class="text-xl font-bold text-sky-700">{{
-                                                selectedCandidate?.stats?.goals || '0' }}</div>
+                                            <div class="text-xl font-bold text-sky-700">{{ selectedCandidate?.stats?.goals || '0' }}</div>
                                         </div>
                                         <div class="bg-white p-3 rounded shadow-sm">
                                             <div class="text-sm text-gray-500">Assists</div>
@@ -283,35 +273,31 @@ const handleVoteSubmit = () => {
                                 </template>
                             </div>
 
-                            <!-- Vote Counter -->
-                            <div class="bg-white p-4 rounded-lg shadow mb-6 border border-gray-100">
-                                <div class="flex items-center justify-between mb-4">
-                                    <span class="block text-gray-800 font-medium">Umubare w'amajwi</span>
-                                    <div class="flex items-center">
-                                        <button @click="handleVoteChange(-1)"
-                                            class="flex items-center justify-center w-8 h-8 rounded-full bg-sky-100 text-sky-700 hover:bg-sky-200 transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
-                                                fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
+                            <!-- Error Alert - Adding this section to display errors -->
+                            <div v-if="voteError" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                                <div class="flex items-center">
+                                    <svg class="h-5 w-5 text-red-400 mr-2" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-sm text-red-800 font-medium">{{ voteError }}</span>
+                                </div>
+                            </div>
 
-                                        <div class="w-12 mx-3 text-center">
-                                            <span class="text-xl font-bold text-sky-700">{{ voteCount }}</span>
-                                        </div>
-
-                                        <button @click="handleVoteChange(1)"
-                                            class="flex items-center justify-center w-8 h-8 rounded-full bg-sky-100 text-sky-700 hover:bg-sky-200 transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
-                                                fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
-                                    </div>
+                            <!-- Alert Message -->
+                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                                <div class="flex items-center">
+                                    <svg class="h-5 w-5 text-yellow-400 mr-2" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-sm text-yellow-800"><strong>Icyitonderwa : </strong>Menyako
+                                        wemerewe
+                                        gutora rimwe gusa muri buri cyiciro</span>
                                 </div>
                             </div>
 
@@ -340,7 +326,7 @@ const handleVoteSubmit = () => {
                     <h3 class="text-2xl font-bold text-gray-900 mb-2">Murakoze gutora!</h3>
                     <p class="text-gray-600 mb-6">
                         Ijwi ryawe ryakiriwe. Murakoze gutora <strong>{{ selectedCandidate?.name }}</strong> mu icyiciro
-                        <strong>{{ selectedCategory?.name }}</strong>. Amajwi {{ voteCount }} yanditswe.
+                        <strong>{{ selectedCategory?.name }}</strong>.
                     </p>
 
                     <button @click="() => { showThankYou = false; resetFormData(); }"

@@ -21,6 +21,7 @@ class CandidateController extends Controller
                 'order' => 'required|integer|min:1',
                 'status' => 'required|in:active,inactive',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'stats' => 'nullable|array',
             ]);
 
             // Handle image upload
@@ -29,7 +30,7 @@ class CandidateController extends Controller
                 $image = $request->file('image');
                 $imageName = time() . '_' . $image->getClientOriginalName();
                 $image->move('candidates', $imageName);
-                $validatedData['image'] = "/candidates/{$imageName}";
+                $validatedData['image'] = "candidates/{$imageName}";
             }
 
             // Create the candidate
@@ -39,6 +40,7 @@ class CandidateController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['error' => 'Failed to create Candidate: ' . $e->getMessage()]);
@@ -58,6 +60,7 @@ class CandidateController extends Controller
                 'order' => 'required|integer|min:1',
                 'status' => 'required|in:active,inactive',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'stats' => 'nullable|array',
             ]);
 
 
@@ -72,7 +75,7 @@ class CandidateController extends Controller
                 $image = $request->file('image');
                 $imageName = time() . '_' . $image->getClientOriginalName();
                 $image->move('candidates', $imageName);
-                $validatedData['image'] = "/candidates/{$imageName}";
+                $validatedData['image'] = "candidates/{$imageName}";
             } else {
                 $validatedData['image'] = $candidate->image;
             }
@@ -87,6 +90,22 @@ class CandidateController extends Controller
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['error' => 'Failed to update Candidate: ' . $e->getMessage()]);
+        }
+    }
+
+    public function updateStats(Request $request, Candidate $candidate)
+    {
+        try {
+            $validatedData = $request->validate([
+                'stats' => 'required|array',
+            ]);
+
+            $candidate->stats = $validatedData['stats'];
+            $candidate->save();
+
+            return redirect()->back()->with('success', 'Candidate statistics updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to update candidate statistics: ' . $e->getMessage());
         }
     }
 

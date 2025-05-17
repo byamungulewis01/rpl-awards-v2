@@ -17,7 +17,7 @@ use App\Http\Controllers\NewsController;
 
 Route::get('/', [VotingController::class, 'index'])->name('welcome');
 Route::get('/news/{slug}', [VotingController::class, 'news_details'])->name('news.show');
-Route::post('/process-payment', [VotingController::class, 'processPayment'])->name('voting.process');
+Route::post('/process-vote', [VotingController::class, 'processVote'])->name('voting.process');
 
 Route::middleware(['auth', 'verified', 'track-last-login', 'active-user'])->group(function () {
     Route::get('/dashboard', function () {
@@ -35,7 +35,8 @@ Route::middleware(['auth', 'verified', 'track-last-login', 'active-user'])->grou
         // New routes for order and status updates
         Route::post('/candidates/{candidate}/order', [CandidateController::class, 'updateOrder'])->name('candidates.updateOrder');
         Route::post('/candidates/{candidate}/status', [CandidateController::class, 'updateStatus'])->name('candidates.updateStatus');
-
+        Route::post('/candidates/{candidate}/update-stats', [CandidateController::class, 'updateStats'])
+        ->name('candidates.updateStats');
 
         // Route::prefix('admin')->name('admin.')->group(function () {
         //     // Nomination statistics and analytics

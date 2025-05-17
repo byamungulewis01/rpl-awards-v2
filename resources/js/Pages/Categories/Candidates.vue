@@ -30,6 +30,7 @@ import {
 } from "@/Components/ui/select";
 
 import { Badge } from "@/Components/ui/badge";
+import { Checkbox } from "@/Components/ui/checkbox";
 import {
     Edit,
     Plus,
@@ -38,7 +39,9 @@ import {
     ArrowUp,
     ArrowDown,
     EyeOff,
-    Eye
+    Eye,
+    LineChart,
+    Trophy
 } from 'lucide-vue-next';
 import imagePath from '@/lib/image';
 
@@ -52,6 +55,10 @@ const showCandidateDialog = ref(false);
 const isEditMode = ref(false);
 const imagePreview = ref(null);
 
+// Stats dialog
+const showStatsDialog = ref(false);
+const currentCandidate = ref(null);
+
 const form = useForm({
     id: null,
     category_id: props.category?.id,
@@ -59,6 +66,28 @@ const form = useForm({
     image: null,
     order: 1,
     status: 'active',
+    stats: null,
+});
+
+// Stats form
+const statsForm = useForm({
+    id: null,
+    stats: {
+        goals: 0,
+        assists: 0,
+        appearances: 0,
+        cards: {
+            yellow: 0,
+            red: 0
+        },
+        awards: {
+            bestPlayer: false,
+            goalOfSeason: false,
+            coach: false,
+            youngPlayer: false
+        },
+        rating: 0
+    }
 });
 
 // Reset form and clear any errors
@@ -96,6 +125,7 @@ const openEditDialog = (candidate) => {
     form.name = candidate.name;
     form.order = candidate.order || 1;
     form.status = candidate.status || 'active';
+    form.stats = candidate.stats || null;
 
     // Set image preview if image exists
     if (candidate.image) {
@@ -103,6 +133,67 @@ const openEditDialog = (candidate) => {
     }
 
     showCandidateDialog.value = true;
+};
+
+// Open stats dialog for a candidate
+const openStatsDialog = (candidate) => {
+    currentCandidate.value = candidate;
+    statsForm.id = candidate.id;
+
+    // Initialize with existing stats or set defaults
+    if (candidate.stats) {
+        statsForm.stats = {
+            goals: candidate.stats.goals || 0,
+            assists: candidate.stats.assists || 0,
+            appearances: candidate.stats.appearances || 0,
+            cards: {
+                yellow: candidate.stats.cards?.yellow || 0,
+                red: candidate.stats.cards?.red || 0
+            },
+            awards: {
+                bestPlayer: candidate.stats.awards?.bestPlayer || false,
+                goalOfSeason: candidate.stats.awards?.goalOfSeason || false,
+                coach: candidate.stats.awards?.coach || false,
+                youngPlayer: candidate.stats.awards?.youngPlayer || false
+            },
+            rating: candidate.stats.rating || 0
+        };
+    } else {
+        // Set default values
+        statsForm.stats = {
+            goals: 0,
+            assists: 0,
+            appearances: 0,
+            cards: {
+                yellow: 0,
+                red: 0
+            },
+            awards: {
+                bestPlayer: false,
+                goalOfSeason: false,
+                coach: false,
+                youngPlayer: false
+            },
+            rating: 0
+        };
+    }
+
+    showStatsDialog.value = true;
+};
+
+// Submit stats form
+const submitStatsForm = () => {
+    statsForm.post(route('candidates.updateStats', statsForm.id), {
+        onSuccess: () => {
+            showStatsDialog.value = false;
+            router.visit(route('categories.show', props.category.id), {
+                only: ['candidates']
+            });
+        },
+        onError: (errors) => {
+            console.log('Validation errors:', errors);
+        }
+    });
 };
 
 // Handle form submission (create or update)
@@ -222,10 +313,28 @@ const sortedCandidates = computed(() => {
     if (!props.candidates) return [];
     return [...props.candidates].sort((a, b) => (a.order || 0) - (b.order || 0));
 });
+
+// Get award badge information
+const hasAnyAward = (candidate) => {
+    if (!candidate.stats || !candidate.stats.awards) return false;
+    const awards = candidate.stats.awards;
+    return awards.bestPlayer || awards.goalOfSeason || awards.coach || awards.youngPlayer;
+};
+
+const getAwardLabel = (candidate) => {
+    if (!candidate.stats || !candidate.stats.awards) return '';
+
+    const awards = candidate.stats.awards;
+    if (awards.bestPlayer) return 'Best Player';
+    if (awards.goalOfSeason) return 'Goal of Season';
+    if (awards.coach) return 'Coach';
+    if (awards.youngPlayer) return 'Young Player';
+
+    return '';
+};
 </script>
 
 <template>
-
     <Head :title="`${category.name} Candidates`" />
 
     <AuthenticatedLayout>
@@ -257,7 +366,10 @@ const sortedCandidates = computed(() => {
                         :class="{ 'opacity-60': candidate.status === 'inactive' }" class="rounded-none">
                         <CardHeader class="pb-2 space-y-0 p-3">
                             <CardTitle class="text-md font-light flex justify-between items-center">
-                                <!-- <span>Code: {{ candidate.code }}</span> -->
+                                <Badge v-if="hasAnyAward(candidate)" class="bg-yellow-500 hover:bg-yellow-600">
+                                    <Trophy class="h-3 w-3 mr-1" />
+                                    {{ getAwardLabel(candidate) }}
+                                </Badge>
                                 <Badge :variant="candidate.status === 'active' ? 'default' : 'destructive'"
                                     class="text-xs">
                                     {{ candidate.status.toUpperCase() }}
@@ -277,10 +389,32 @@ const sortedCandidates = computed(() => {
                                     class="absolute top-2 left-2 bg-black/70 font-thin text-white text-xs px-2 py-1 rounded">
                                     ORDER: {{ candidate.order }}
                                 </div>
+
+                                <!-- Stats Badge -->
+                                <div
+                                    v-if="candidate.stats && candidate.stats.rating"
+                                    class="absolute bottom-2 right-2 bg-green-500 font-medium text-white text-xs px-2 py-1 rounded">
+                                    {{ candidate.stats.rating }}/10
+                                </div>
+                            </div>
+
+                            <div class="px-3 pb-3">
+                                <h3 class="font-medium text-md mb-1">{{ candidate.name }}</h3>
+                                <div v-if="candidate.stats" class="text-xs text-gray-500 grid grid-cols-2 gap-x-2 gap-y-1">
+                                    <div v-if="typeof candidate.stats.goals !== 'undefined'">
+                                        <span class="font-medium">Goals:</span> {{ candidate.stats.goals }}
+                                    </div>
+                                    <div v-if="typeof candidate.stats.assists !== 'undefined'">
+                                        <span class="font-medium">Assists:</span> {{ candidate.stats.assists }}
+                                    </div>
+                                    <div v-if="typeof candidate.stats.appearances !== 'undefined'">
+                                        <span class="font-medium">Apps:</span> {{ candidate.stats.appearances }}
+                                    </div>
+                                </div>
                             </div>
                         </CardContent>
 
-                        <CardFooter class="grid grid-cols-2 gap-2 p-2">
+                        <CardFooter class="grid grid-cols-2 gap-2 p-2 border-t">
                             <div class="flex gap-1">
                                 <Button variant="outline" size="icon" class="h-8 w-8" @click="moveUp(candidate)"
                                     :disabled="candidate.order <= 1">
@@ -296,6 +430,10 @@ const sortedCandidates = computed(() => {
                                 </Button>
                             </div>
                             <div class="flex justify-end gap-1">
+                                <Button variant="outline" size="icon" class="h-8 w-8 text-blue-500"
+                                    @click="openStatsDialog(candidate)">
+                                    <LineChart class="h-4 w-4" />
+                                </Button>
                                 <Button variant="outline" size="icon" class="h-8 w-8"
                                     @click="openEditDialog(candidate)">
                                     <Edit class="h-4 w-4" />
@@ -337,8 +475,6 @@ const sortedCandidates = computed(() => {
                             <Input id="name" v-model="form.name" placeholder="Candidate Name" required />
                             <div v-if="form.errors.name" class="text-sm text-red-500">{{ form.errors.name }}</div>
                         </div>
-
-
 
                         <!-- Order Field -->
                         <div v-if="isEditMode" class="grid gap-2">
@@ -387,6 +523,144 @@ const sortedCandidates = computed(() => {
                         <Button type="submit" :disabled="form.processing">
                             {{ isEditMode ? 'Update Candidate' : 'Create Candidate' }}
                             <span v-if="form.processing" class="ml-2">
+                                <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 1 1 16 0A8 8 0 0 1 4 12z"></path>
+                                </svg>
+                            </span>
+                        </Button>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+        </Dialog>
+
+        <!-- Stats Dialog -->
+        <Dialog :open="showStatsDialog" @update:open="showStatsDialog = $event">
+            <DialogContent class="max-w-md">
+                <DialogHeader>
+                    <DialogTitle>{{ currentCandidate?.name }} - Statistics</DialogTitle>
+                </DialogHeader>
+                <form @submit.prevent="submitStatsForm">
+                    <div class="grid gap-6 py-4">
+                        <!-- Performance Stats Section -->
+                        <div>
+                            <h3 class="text-lg font-medium mb-3">Performance Statistics</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="grid gap-2">
+                                    <Label for="goals">Goals</Label>
+                                    <Input
+                                        id="goals"
+                                        type="number"
+                                        v-model="statsForm.stats.goals"
+                                        min="0"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div class="grid gap-2">
+                                    <Label for="assists">Assists</Label>
+                                    <Input
+                                        id="assists"
+                                        type="number"
+                                        v-model="statsForm.stats.assists"
+                                        min="0"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div class="grid gap-2">
+                                    <Label for="appearances">Appearances</Label>
+                                    <Input
+                                        id="appearances"
+                                        type="number"
+                                        v-model="statsForm.stats.appearances"
+                                        min="0"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div class="grid gap-2">
+                                    <Label for="rating">Rating (0-10)</Label>
+                                    <Input
+                                        id="rating"
+                                        type="number"
+                                        v-model="statsForm.stats.rating"
+                                        min="0"
+                                        max="10"
+                                        step="0.1"
+                                        placeholder="0"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cards Section -->
+                        <div>
+                            <h3 class="text-lg font-medium mb-3">Cards</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="grid gap-2">
+                                    <Label for="yellow">Yellow Cards</Label>
+                                    <Input
+                                        id="yellow"
+                                        type="number"
+                                        v-model="statsForm.stats.cards.yellow"
+                                        min="0"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div class="grid gap-2">
+                                    <Label for="red">Red Cards</Label>
+                                    <Input
+                                        id="red"
+                                        type="number"
+                                        v-model="statsForm.stats.cards.red"
+                                        min="0"
+                                        placeholder="0"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Awards Section -->
+                        <div>
+                            <h3 class="text-lg font-medium mb-3">Awards</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-2">
+                                    <Checkbox
+                                        id="bestPlayer"
+                                        v-model="statsForm.stats.awards.bestPlayer"
+                                    />
+                                    <Label for="bestPlayer">Best Player</Label>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <Checkbox
+                                        id="goalOfSeason"
+                                        v-model="statsForm.stats.awards.goalOfSeason"
+                                    />
+                                    <Label for="goalOfSeason">Goal of the Season</Label>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <Checkbox
+                                        id="coach"
+                                        v-model="statsForm.stats.awards.coach"
+                                    />
+                                    <Label for="coach">Coach of the Year</Label>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <Checkbox
+                                        id="youngPlayer"
+                                        v-model="statsForm.stats.awards.youngPlayer"
+                                    />
+                                    <Label for="youngPlayer">Young Player of the Year</Label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <DialogFooter>
+                        <Button type="button" variant="outline" @click="showStatsDialog = false">Cancel</Button>
+                        <Button type="submit" :disabled="statsForm.processing">
+                            Save Statistics
+                            <span v-if="statsForm.processing" class="ml-2">
                                 <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                                         stroke-width="4"></circle>

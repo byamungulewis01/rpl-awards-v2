@@ -11,7 +11,8 @@ class Vote extends Model
 
     protected $fillable = [
         'candidate_id',
-        'payment_id',
+        'category_id',
+        'ip_address'
     ];
 
     public function candidate()
@@ -19,8 +20,8 @@ class Vote extends Model
         return $this->belongsTo(Candidate::class);
     }
 
-    public function payment()
+    public function category()
     {
-        return $this->belongsTo(Payment::class);
+        return $this->belongsTo(Category::class);
     }
 }

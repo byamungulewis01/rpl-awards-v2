@@ -66,24 +66,12 @@ class VotingController extends Controller
 
 
 
-    public function processPayment(Request $request)
+    public function processVote(Request $request)
     {
-        $vote_amount = (int) Setting::where('name', 'vote_amount')->first()->value;
-        // dd($request->all());
         // Validate the request
         $validator = Validator::make($request->all(), [
             'candidateId' => 'required|exists:candidates,id',
-            'votes' => 'required|integer|min:1|max:100',
-            'phoneNumber' => [
-                'required',
-                'string',
-                'regex:/^07\d{8}$/' // Must start with '07' and be exactly 10 digits
-            ],
-            'paymentMethod' => 'required|in:mtn,airtel',
             'categoryId' => 'required|exists:categories,id',
-            'amount' => 'required|numeric|min:' . $vote_amount,
-        ], [
-            'phoneNumber.regex' => 'Phone number must start with 07 and be exactly 10 digits long.',
         ]);
 
         if ($validator->fails()) {
@@ -91,53 +79,31 @@ class VotingController extends Controller
         }
 
         try {
-            // Check if phone number has already voted for this candidate in this category
-            $existingVote = Payment::where('phone_number', $request->phoneNumber)
+            // Get user's IP address as a unique identifier
+            $userIp = $request->ip();
+
+            // Check if this IP has already voted for this category
+            $existingVote = Vote::where('ip_address', $userIp)
                 ->where('category_id', $request->categoryId)
-                // ->where('candidate_id', $request->candidateId)
-                ->where('status', 'successful')
                 ->first();
 
             if ($existingVote) {
                 return back()->withErrors([
-                    'phoneNumber' => 'Iyi nimero ya telefoni yamaze gutora muri iki cyiciro.'
+                    'duplicate' => 'Wamaze gutora muri iki cyiciro.'  // "You have already voted in this category" in Kinyarwanda
                 ]);
             }
 
-
-            $paypack = new Paypack();
-
-            $paypack->config([
-                'client_id' => env('PAYPACK_CLIENT_ID'),
-                'client_secret' => env('PAYPACK_CLIENT_SECRET'),
-            ]);
-            $cashin = $paypack->Cashin([
-                'phone' => $request->phoneNumber,
-                'amount' => $request->amount,
-            ]);
-
-            // Create payment record
-            $payment = Payment::create([
-                'candidate_id' => $request->candidateId,
-                'category_id' => $request->categoryId,
-                'phone_number' => $request->phoneNumber,
-                'payment_method' => $request->paymentMethod,
-                'amount' => $request->amount,
-                'votes' => $request->votes,
-                'status' => 'pending', // Initial status
-                'transaction_id' => $cashin['ref'] ?? null
-            ]);
-
+            // Create vote record directly
             Vote::create([
                 'candidate_id' => $request->candidateId,
-                'payment_id' => $payment->id,
+                'category_id' => $request->categoryId,
+                'ip_address' => $userIp,
             ]);
 
-            $payment->update(['status' => 'initiated']);
-
-            return back()->with('success', 'Payment initiated successfully.');
+            return back()->with('success', 'Itora ryakozwe neza.');  // "Voting completed successfully" in Kinyarwanda
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'An error occurred while processing your payment. Please try again.']);
+            dd($e->getMessage());
+            return back()->withErrors(['error' => 'Hari ikibazo cyabaye. Ongera ugerageze.']);  // "An error occurred. Please try again" in Kinyarwanda
         }
     }
 
