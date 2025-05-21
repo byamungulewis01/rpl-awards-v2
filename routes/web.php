@@ -24,6 +24,9 @@ Route::middleware(['auth', 'verified', 'track-last-login', 'active-user'])->grou
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+    Route::get('/inspector', [VotingController::class, 'inspector'])->name('inspector');
+
+
     Route::middleware('user-access:super_admin,admin')->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('categories', CategoryController::class);
@@ -36,12 +39,27 @@ Route::middleware(['auth', 'verified', 'track-last-login', 'active-user'])->grou
         Route::post('/candidates/{candidate}/order', [CandidateController::class, 'updateOrder'])->name('candidates.updateOrder');
         Route::post('/candidates/{candidate}/status', [CandidateController::class, 'updateStatus'])->name('candidates.updateStatus');
         Route::post('/candidates/{candidate}/update-stats', [CandidateController::class, 'updateStats'])
-        ->name('candidates.updateStats');
+            ->name('candidates.updateStats');
 
         // Route::prefix('admin')->name('admin.')->group(function () {
         //     // Nomination statistics and analytics
         //     Route::get('/nominations/stats', [AdminNominationController::class, 'index'])->name('nominations.stats');
         //     Route::get('/nominations/candidate/{id}', [AdminNominationController::class, 'candidateDetail'])->name('nominations.candidate-detail');
+
+        // Profile
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        ;
+
+        Route::controller(NewsController::class)->group(function () {
+            Route::get('/news', 'index')->name('news.index');
+            Route::post('/news', 'store')->name('news.store');
+            Route::get('/news/create', 'create')->name('news.create');
+            Route::put('/news/{slug}', 'update')->name('news.update');
+            Route::get('/news/{slug}/edit', 'edit')->name('news.edit');
+            Route::delete('/news/{slug}', 'destroy')->name('news.destroy');
+        });
     });
 
 
@@ -53,20 +71,6 @@ Route::middleware(['auth', 'verified', 'track-last-login', 'active-user'])->grou
         ->name('admin.nominations.export');
 
 
-    // Profile
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    ;
-
-    Route::controller(NewsController::class)->group(function () {
-        Route::get('/news', 'index')->name('news.index');
-        Route::post('/news', 'store')->name('news.store');
-        Route::get('/news/create', 'create')->name('news.create');
-        Route::put('/news/{slug}', 'update')->name('news.update');
-        Route::get('/news/{slug}/edit', 'edit')->name('news.edit');
-        Route::delete('/news/{slug}', 'destroy')->name('news.destroy');
-    });
 });
 
 require __DIR__ . '/auth.php';

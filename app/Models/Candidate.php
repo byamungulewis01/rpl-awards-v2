@@ -36,4 +36,14 @@ class Candidate extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    public function getVotesCountAttribute()
+    {
+        return $this->votes()->count();
+    }
+
 }

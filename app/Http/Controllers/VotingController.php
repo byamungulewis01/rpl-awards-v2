@@ -110,4 +110,34 @@ class VotingController extends Controller
         }
     }
 
+    public function inspector()
+    {
+        $categories = Category::with([
+            'candidates' => function ($query) {
+                $query->orderBy('order', 'asc');
+            }
+        ])->get();
+
+
+        // Transform the data for frontend
+        $categories = $categories->map(function ($category) {
+            return [
+                'id' => $category->id,
+                'name' => $category->name,
+                'league' => $category->league,
+                'candidates' => $category->candidates->map(function ($candidate) {
+                    return [
+                        'id' => $candidate->id,
+                        'name' => $candidate->name,
+                        'image' => $candidate->image,
+                        'order' => $candidate->order,
+                        'votes_count' => $candidate->votes_count,
+                    ];
+                }),
+            ];
+        });
+
+        return Inertia::render('Inspector', compact('categories'));
+    }
+
 }

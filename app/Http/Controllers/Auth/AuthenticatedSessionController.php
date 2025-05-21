@@ -33,8 +33,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if (in_array(Auth::user()->role, ['journalist', 'team_captain', 'coach'])) {
-            return redirect()->intended(route('nominations.index', absolute: false));
+        if (Auth::user()->role === 'inspector') {
+            return redirect()->intended(route('inspector', absolute: false));
         }
 
         return redirect()->intended(route('dashboard', absolute: false));
