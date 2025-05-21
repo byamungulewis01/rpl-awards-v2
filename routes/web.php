@@ -15,7 +15,16 @@ use App\Http\Controllers\NewsController;
 //     return Inertia::render('Welcome', );
 // });
 
-Route::get('/', [VotingController::class, 'index'])->name('welcome');
+// Route::get('/', [VotingController::class, 'index'])->name('welcome');
+
+Route::get('/', function () {
+    return Inertia::render('ComingSoon', [
+        'siteName' => 'My Website',
+        'launchDate' => now()->addDays(30)->format('Y-m-d'),
+    ]);
+});
+
+
 Route::get('/news/{slug}', [VotingController::class, 'news_details'])->name('news.show');
 Route::post('/process-vote', [VotingController::class, 'processVote'])->name('voting.process');
 
