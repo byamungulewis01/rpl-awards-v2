@@ -105,7 +105,6 @@ class VotingController extends Controller
 
             return back()->with('success', 'Itora ryakozwe neza.');  // "Voting completed successfully" in Kinyarwanda
         } catch (\Exception $e) {
-            dd($e->getMessage());
             return back()->withErrors(['error' => 'Hari ikibazo cyabaye. Ongera ugerageze.']);  // "An error occurred. Please try again" in Kinyarwanda
         }
     }
