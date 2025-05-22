@@ -69,45 +69,45 @@ class VotingController extends Controller
 
 
 
-    public function processVote(Request $request)
-    {
-        // Validate the request
-        $validator = Validator::make($request->all(), [
-            'candidateId' => 'required|exists:candidates,id',
-            'categoryId' => 'required|exists:categories,id',
-        ]);
+    // public function processVote(Request $request)
+    // {
+    //     // Validate the request
+    //     $validator = Validator::make($request->all(), [
+    //         'candidateId' => 'required|exists:candidates,id',
+    //         'categoryId' => 'required|exists:categories,id',
+    //     ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+    //     if ($validator->fails()) {
+    //         return back()->withErrors($validator)->withInput();
+    //     }
 
-        try {
-            // Get user's IP address as a unique identifier
-            $userIp = $request->ip();
+    //     try {
+    //         // Get user's IP address as a unique identifier
+    //         $userIp = $request->ip();
 
-            // Check if this IP has already voted for this category
-            $existingVote = Vote::where('ip_address', $userIp)
-                ->where('category_id', $request->categoryId)
-                ->first();
+    //         // Check if this IP has already voted for this category
+    //         $existingVote = Vote::where('ip_address', $userIp)
+    //             ->where('category_id', $request->categoryId)
+    //             ->first();
 
-            if ($existingVote) {
-                return back()->withErrors([
-                    'duplicate' => 'Wamaze gutora muri iki cyiciro.'  // "You have already voted in this category" in Kinyarwanda
-                ]);
-            }
+    //         if ($existingVote) {
+    //             return back()->withErrors([
+    //                 'duplicate' => 'Wamaze gutora muri iki cyiciro.'  // "You have already voted in this category" in Kinyarwanda
+    //             ]);
+    //         }
 
-            // Create vote record directly
-            Vote::create([
-                'candidate_id' => $request->candidateId,
-                'category_id' => $request->categoryId,
-                'ip_address' => $userIp,
-            ]);
+    //         // Create vote record directly
+    //         Vote::create([
+    //             'candidate_id' => $request->candidateId,
+    //             'category_id' => $request->categoryId,
+    //             'ip_address' => $userIp,
+    //         ]);
 
-            return back()->with('success', 'Itora ryakozwe neza.');  // "Voting completed successfully" in Kinyarwanda
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Hari ikibazo cyabaye. Ongera ugerageze.']);  // "An error occurred. Please try again" in Kinyarwanda
-        }
-    }
+    //         return back()->with('success', 'Itora ryakozwe neza.');  // "Voting completed successfully" in Kinyarwanda
+    //     } catch (\Exception $e) {
+    //         return back()->withErrors(['error' => 'Hari ikibazo cyabaye. Ongera ugerageze.']);  // "An error occurred. Please try again" in Kinyarwanda
+    //     }
+    // }
 
     public function inspector()
     {
@@ -137,6 +137,82 @@ class VotingController extends Controller
         });
 
         return Inertia::render('Inspector', compact('categories'));
+    }
+
+    public function processVote(Request $request)
+    {
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+            'candidateId' => 'required|exists:candidates,id',
+            'categoryId' => 'required|exists:categories,id',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            // Method 1: Session + Device Fingerprint (Recommended)
+            if ($this->hasAlreadyVotedBySession($request)) {
+                return back()->withErrors([
+                    'duplicate' => 'Wamaze gutora muri iki cyiciro.'
+                ]);
+            }
+
+            // Create vote record
+            Vote::create([
+                'candidate_id' => $request->candidateId,
+                'category_id' => $request->categoryId,
+                'ip_address' => $request->ip(),
+                'session_id' => session()->getId(),
+                'device_fingerprint' => $this->generateDeviceFingerprint($request),
+                'device_name' => $request->header('User-Agent'),
+
+            ]);
+
+            return back()->with('success', 'Itora ryakozwe neza.');
+
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Hari ikibazo cyabaye. Ongera ugerageze.']);
+        }
+    }
+
+    // Method 1: Session + Device Fingerprint validation
+    private function hasAlreadyVotedBySession(Request $request)
+    {
+        $sessionId = session()->getId();
+        $deviceFingerprint = $this->generateDeviceFingerprint($request);
+
+        return Vote::where(function ($query) use ($sessionId, $deviceFingerprint, $request) {
+            $query->where('session_id', $sessionId)
+                ->orWhere('device_fingerprint', $deviceFingerprint);
+        })
+            ->where('category_id', $request->categoryId)
+            ->exists();
+    }
+
+
+
+    // Generate device fingerprint
+    private function generateDeviceFingerprint(Request $request)
+    {
+        $components = [
+            $request->header('User-Agent'),
+            $request->header('Accept-Language'),
+            $request->header('Accept-Encoding'),
+            $request->ip(),
+            $request->userAgent(),
+            $request->header('Referer'),
+            $request->header('Accept'),
+            $request->header('Accept-Charset'),
+            $request->header('Accept-Language'),
+            $request->header('Accept-Encoding'),
+            $request->header('Accept-Language'),
+            $request->header('Accept-Encoding'),
+            // Add more browser/device characteristics
+        ];
+
+        return hash('sha256', implode('|', array_filter($components)));
     }
 
 }

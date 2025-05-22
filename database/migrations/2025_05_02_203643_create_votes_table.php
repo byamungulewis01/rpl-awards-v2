@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->foreignId('candidate_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('ip_address');
+            $table->string('session_id');
+            $table->string('device_fingerprint');
             $table->timestamps();
         });
     }

@@ -12,7 +12,10 @@ class Vote extends Model
     protected $fillable = [
         'candidate_id',
         'category_id',
-        'ip_address'
+        'ip_address',
+        'session_id',
+        'device_fingerprint',
+        'device_name',
     ];
 
     public function candidate()
