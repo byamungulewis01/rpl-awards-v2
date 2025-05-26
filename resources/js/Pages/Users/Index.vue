@@ -168,6 +168,7 @@ const formatDate = (dateString) => {
 </script>
 
 <template>
+
     <Head title="Users" />
 
     <AuthenticatedLayout>
@@ -177,11 +178,7 @@ const formatDate = (dateString) => {
                     <div>
                         <CardTitle class="text-2xl">Users Management</CardTitle>
                     </div>
-                    <Button
-                        @click="openCreateDialog"
-                        variant="default"
-                        class="flex items-center gap-2"
-                    >
+                    <Button @click="openCreateDialog" variant="default" class="flex items-center gap-2">
                         <UserPlus class="w-4 h-4" />
                         Add User
                     </Button>
@@ -190,15 +187,9 @@ const formatDate = (dateString) => {
             <CardContent>
                 <!-- Search Bar -->
                 <div class="relative mb-6">
-                    <Search
-                        class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
-                    />
-                    <Input
-                        v-model="searchQuery"
-                        @input="filterUsers"
-                        placeholder="Search users by name or email..."
-                        class="pl-10"
-                    />
+                    <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                    <Input v-model="searchQuery" @input="filterUsers" placeholder="Search users by name or email..."
+                        class="pl-10" />
                 </div>
 
                 <!-- Users Table -->
@@ -214,16 +205,11 @@ const formatDate = (dateString) => {
                                 <TableHead>Team</TableHead>
                                 <TableHead>Last Login</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead class="text-right"
-                                    >Actions</TableHead
-                                >
+                                <TableHead class="text-right">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            <TableRow
-                                v-for="(user, index) in filteredUsers"
-                                :key="user.id"
-                            >
+                            <TableRow v-for="(user, index) in filteredUsers" :key="user.id">
                                 <TableCell>
                                     <Badge variant="outline">
                                         {{ index + 1 }}
@@ -231,22 +217,27 @@ const formatDate = (dateString) => {
                                 </TableCell>
                                 <TableCell class="font-medium">{{
                                     user.name
-                                }}</TableCell>
+                                    }}</TableCell>
                                 <TableCell>
                                     <div class="flex items-center gap-1">
                                         <Mail class="w-4 h-4 text-gray-500" />
                                         <span class="text-sm">{{
                                             user.email
-                                        }}</span>
+                                            }}</span>
                                     </div>
                                 </TableCell>
                                 <TableCell>
-                                    <div class="flex items-center gap-1">
-                                        <Phone class="w-4 h-4 text-gray-500" />
-                                        <span class="text-sm">{{
-                                            user.phone
-                                        }}</span>
-                                    </div>
+                                    <span v-if="user.phone">
+                                        <div class="flex items-center gap-1">
+                                            <Phone class="w-4 h-4 text-gray-500" />
+                                            <span class="text-sm">{{
+                                                user.phone
+                                                }}</span>
+                                        </div>
+                                    </span>
+                                    <span v-else>
+                                        <span class="text-sm text-gray-500">N/A</span>
+                                    </span>
                                 </TableCell>
                                 <TableCell>
                                     <Badge variant="outline">
@@ -276,30 +267,19 @@ const formatDate = (dateString) => {
                                 </TableCell>
                                 <TableCell class="text-right">
                                     <div class="flex justify-end gap-2">
-                                        <Button
-                                            variant="outline"
-                                            size="icon"
-                                            class="h-8 w-8"
-                                            @click="openEditDialog(user)"
-                                        >
+                                        <Button variant="outline" size="icon" class="h-8 w-8"
+                                            @click="openEditDialog(user)">
                                             <Edit class="h-4 w-4" />
                                         </Button>
-                                        <Button
-                                            variant="outline"
-                                            size="icon"
-                                            class="h-8 w-8 text-red-500"
-                                            @click="confirmDelete(user.id)"
-                                        >
+                                        <Button variant="outline" size="icon" class="h-8 w-8 text-red-500"
+                                            @click="confirmDelete(user.id)">
                                             <Trash2 class="h-4 w-4" />
                                         </Button>
                                     </div>
                                 </TableCell>
                             </TableRow>
                             <TableRow v-if="filteredUsers.length === 0">
-                                <TableCell
-                                    colspan="7"
-                                    class="text-center py-8 text-gray-500"
-                                >
+                                <TableCell colspan="7" class="text-center py-8 text-gray-500">
                                     No users found. Try a different search or
                                     add a new user.
                                 </TableCell>
@@ -322,63 +302,36 @@ const formatDate = (dateString) => {
                 <DialogHeader>
                     <DialogTitle>{{
                         isEditMode ? "Edit User" : "Add New User"
-                    }}</DialogTitle>
+                        }}</DialogTitle>
                 </DialogHeader>
                 <form @submit.prevent="submitForm">
                     <div class="grid gap-4 py-4">
                         <div class="grid gap-2">
                             <Label for="name">Full Name</Label>
-                            <Input
-                                id="name"
-                                v-model="form.name"
-                                placeholder="Enter user's full name"
-                                required
-                            />
-                            <div
-                                v-if="form.errors.name"
-                                class="text-sm text-red-500"
-                            >
+                            <Input id="name" v-model="form.name" placeholder="Enter user's full name" required />
+                            <div v-if="form.errors.name" class="text-sm text-red-500">
                                 {{ form.errors.name }}
                             </div>
                         </div>
                         <div class="grid gap-2">
                             <Label for="email">Email Address</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                v-model="form.email"
-                                placeholder="email@example.com"
-                                required
-                            />
-                            <div
-                                v-if="form.errors.email"
-                                class="text-sm text-red-500"
-                            >
+                            <Input id="email" type="email" v-model="form.email" placeholder="email@example.com"
+                                required />
+                            <div v-if="form.errors.email" class="text-sm text-red-500">
                                 {{ form.errors.email }}
                             </div>
                         </div>
                         <div class="grid gap-2">
                             <Label for="phone">Phone Number</Label>
-                            <Input
-                                id="phone"
-                                v-model="form.phone"
-                                placeholder="+256 7XX XXX XXX"
-                                required
-                            />
-                            <div
-                                v-if="form.errors.phone"
-                                class="text-sm text-red-500"
-                            >
+                            <Input id="phone" v-model="form.phone" placeholder="+256 7XX XXX XXX" />
+                            <div v-if="form.errors.phone" class="text-sm text-red-500">
                                 {{ form.errors.phone }}
                             </div>
                         </div>
                         <div class="grid gap-2">
                             <Label for="role">Role</Label>
-                            <select
-                                id="role"
-                                v-model="form.role"
-                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            >
+                            <select id="role" v-model="form.role"
+                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
                                 <option value="" disabled>
                                     Select user role
                                 </option>
@@ -391,20 +344,14 @@ const formatDate = (dateString) => {
                                     Team Captain
                                 </option>
                             </select>
-                            <div
-                                v-if="form.errors.role"
-                                class="text-sm text-red-500"
-                            >
+                            <div v-if="form.errors.role" class="text-sm text-red-500">
                                 {{ form.errors.role }}
                             </div>
                         </div>
                         <div class="grid gap-2">
                             <Label for="team">Team</Label>
-                            <select
-                                id="team"
-                                v-model="form.team"
-                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            >
+                            <select id="team" v-model="form.team"
+                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
                                 <option value="" disabled>Select team</option>
                                 <option value="APR">Apr FC</option>
                                 <option value="Rayon Sport">Rayon Sport</option>
@@ -429,42 +376,28 @@ const formatDate = (dateString) => {
                                 </option>
                                 <option value="Vision">Vision</option>
                             </select>
-                            <div
-                                v-if="form.errors.team"
-                                class="text-sm text-red-500"
-                            >
+                            <div v-if="form.errors.team" class="text-sm text-red-500">
                                 {{ form.errors.team }}
                             </div>
                         </div>
 
                         <div v-if="isEditMode" class="grid gap-2">
                             <Label for="status">Status</Label>
-                            <select
-                                id="status"
-                                v-model="form.status"
-                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            >
+                            <select id="status" v-model="form.status"
+                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
                             </select>
-                            <div
-                                v-if="form.errors.status"
-                                class="text-sm text-red-500"
-                            >
+                            <div v-if="form.errors.status" class="text-sm text-red-500">
                                 {{ form.errors.status }}
                             </div>
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button
-                            type="button"
-                            variant="outline"
-                            @click="showUserDialog = false"
-                            >Cancel</Button
-                        >
+                        <Button type="button" variant="outline" @click="showUserDialog = false">Cancel</Button>
                         <Button type="submit" :disabled="form.processing">{{
                             isEditMode ? "Update User" : "Save User"
-                        }}</Button>
+                            }}</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

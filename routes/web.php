@@ -9,6 +9,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\Admin\AdminNominationController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\CoachCaptainVotingController;
+use App\Http\Controllers\CoachCaptainResultsController;
 
 
 // Route::get('/', function () {
@@ -33,8 +35,25 @@ Route::middleware(['auth', 'verified', 'track-last-login', 'active-user'])->grou
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/inspector', [VotingController::class, 'inspector'])->name('inspector');
-    Route::get('/voting', [VotingController::class, 'voting'])->name('voting');
+    Route::get('/public-results', [VotingController::class, 'inspector'])->name('inspector');
+
+
+
+    // Route::middleware('user-access:super_admin,admin,coach,team_captain')->group(function () {
+    //     Route::get('/voting', [CoachCaptainVotingController::class, 'voting'])->name('voting');
+    //     Route::post('/voting', [CoachCaptainVotingController::class, 'storeVote'])->name('voting.store');
+    // });
+
+    // Enhanced routes for voting system
+    Route::middleware('user-access:coach,team_captain')->controller(CoachCaptainVotingController::class)->group(function () {
+        Route::get('/voting', 'voting')->name('voting');
+        Route::post('/voting', 'storeVote')->name('voting.store');
+    });
+
+    Route::middleware('user-access:admin,super_admin,inspector')->controller(CoachCaptainResultsController::class)->group(function () {
+        Route::get('/results', 'results')->name('results');
+    });
+
 
 
     Route::middleware('user-access:super_admin,admin')->group(function () {
@@ -59,7 +78,8 @@ Route::middleware(['auth', 'verified', 'track-last-login', 'active-user'])->grou
         // Profile
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');;
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        ;
 
         Route::controller(NewsController::class)->group(function () {
             Route::get('/news', 'index')->name('news.index');

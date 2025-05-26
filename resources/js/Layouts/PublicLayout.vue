@@ -27,7 +27,7 @@ const closeMenu = () => {
         <div class="max-w-[85rem] mx-auto px-4 py-4 sm:px-6 lg:px-8 flex items-center justify-between">
             <div class="flex items-center space-x-4">
                 <Link :href="route('welcome')">
-                    <img :src="imagePath('/img/RPL-LOGO.png')" alt="Rwanda Premier League" class="h-12" />
+                <img :src="imagePath('/img/RPL-LOGO.png')" alt="Rwanda Premier League" class="h-12" />
                 </Link>
                 <div>
                     <h1 class="text-2xl font-bold text-blue-600">RPL 2025 Awards</h1>
@@ -50,10 +50,19 @@ const closeMenu = () => {
                     Twandikire
                 </Link>
             </nav> -->
+            <nav v-if="$page.props.auth?.user && ['inspector', 'admin', 'super_admin'].includes($page.props.auth?.user?.role)"
+                class="hidden md:flex items-center space-x-6">
+                <Link :href="route('inspector')" class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
+                Public Results
+                </Link>
+                <Link :href="route('results')" class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
+                Coach Captain Results
+                </Link>
+            </nav>
 
             <!-- Auth / Logo -->
             <div class="hidden md:flex items-center space-x-4">
-                <div v-if="$page.props.auth?.user" class="flex items-center space-x-4">
+                <div v-if="$page.props.auth?.user" class="flex items-center space-x-6">
                     <span class="text-sm text-gray-700">Welcome, {{ $page.props.auth?.user?.name || 'User' }}</span>
                     <button class="px-3 py-1 text-sm font-medium bg-red-400 text-white rounded-md hover:bg-red-600"
                         @click="router.post(route('logout'))">
@@ -64,53 +73,71 @@ const closeMenu = () => {
             </div>
 
             <!-- Mobile menu button -->
-            <!-- <div class="md:hidden flex items-center">
-                <button @click="toggleMenu" class="text-gray-700 hover:text-sky-600 focus:outline-none">
-                    <svg v-if="!isMenuOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div> -->
+            <template
+                v-if="$page.props.auth?.user && ['inspector', 'admin', 'super_admin'].includes($page.props.auth?.user?.role)">
+                <div class="md:hidden flex items-center">
+                    <button @click="toggleMenu" class="text-gray-700 hover:text-sky-600 focus:outline-none">
+                        <svg v-if="!isMenuOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </template>
         </div>
 
         <!-- Mobile menu -->
-        <!-- <div v-if="isMenuOpen"
-            class="md:hidden bg-white border-t border-gray-200 absolute w-full shadow-lg animate-fade-in-down z-30">
-            <div class="px-4 py-2">
-                <div v-if="$page.props.auth?.user" class="py-3 border-b border-gray-200">
-                    <span class="text-sm text-gray-700">Welcome, {{ $page.props.auth?.user?.name || 'User' }}</span>
-                    <button class="mt-2 px-3 py-1 text-sm font-medium bg-red-400 text-white rounded-md hover:bg-red-600"
-                        @click="router.post(route('logout'))">
-                        Logout
-                    </button>
-                </div>
-                <div class="flex flex-col space-y-4 py-4">
-                    <Link :href="route('welcome')"
-                        class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
-                        Ahabanza
-                    </Link>
-                    <Link :href="route('news.index')"
-                        class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
-                        Amakuru
-                    </Link>
-                    <Link :href="route('welcome') + '#archive'"
-                        class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
-                        Ububiko
-                    </Link>
-                    <Link :href="route('welcome') + '#contact-us'"
-                        class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
-                        Twandikire
-                    </Link>
+        <template
+            v-if="$page.props.auth?.user && ['inspector', 'admin', 'super_admin'].includes($page.props.auth?.user?.role)">
+            <div v-if="isMenuOpen"
+                class="md:hidden bg-white border-t border-gray-200 absolute w-full shadow-lg animate-fade-in-down z-30">
+                <div class="px-4 py-2">
+                    <div v-if="$page.props.auth?.user" class="py-3 border-b border-gray-200">
+                        <span class="text-sm text-gray-700">Welcome, {{ $page.props.auth?.user?.name || 'User' }}</span>
+                        <button
+                            class="mt-2 px-3 py-1 text-sm font-medium bg-red-400 text-white rounded-md hover:bg-red-600"
+                            @click="router.post(route('logout'))">
+                            Logout
+                        </button>
+                    </div>
+                    <div v-if="$page.props.auth?.user && ['inspector', 'admin', 'super_admin'].includes($page.props.auth?.user?.role)"
+                        class="flex flex-col space-y-4 py-4">
+                        <Link :href="route('inspector')"
+                            class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
+                        Public Results
+                        </Link>
+                        <Link :href="route('results')"
+                            class="text-gray-700 hover:text-sky-600 font-medium transition-colors">
+                        Coach Captain Results
+                        </Link>
+                    </div>
+                    <!-- <div class="flex flex-col space-y-4 py-4">
+                         <Link :href="route('welcome')"
+                             class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
+                             Ahabanza
+                         </Link>
+                         <Link :href="route('news.index')"
+                             class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
+                             Amakuru
+                         </Link>
+                         <Link :href="route('welcome') + '#archive'"
+                             class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
+                             Ububiko
+                         </Link>
+                         <Link :href="route('welcome') + '#contact-us'"
+                             class="px-2 py-2 text-left text-gray-700 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
+                             Twandikire
+                         </Link>
+                     </div> -->
                 </div>
             </div>
-        </div> -->
+        </template>
     </header>
     <div class="min-h-screen bg-slate-50">
         <main class="">
@@ -146,7 +173,8 @@ const closeMenu = () => {
                                 </path>
                             </svg>
                         </a>
-                        <a href="https://www.instagram.com/rplawards/" target="_blank" class="text-gray-300 hover:text-white">
+                        <a href="https://www.instagram.com/rplawards/" target="_blank"
+                            class="text-gray-300 hover:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="lucide-instagram">

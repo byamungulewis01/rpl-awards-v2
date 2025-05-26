@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use App\Models\Vote;
 use Inertia\Inertia;
-use Paypack\Paypack;
-use App\Models\Payment;
 use App\Models\Setting;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -218,39 +216,4 @@ class VotingController extends Controller
 
 
 
-    public function voting()
-    {
-        // Eager load candidates with each category
-        $categories = Category::with([
-            'candidates' => function ($query) {
-                $query->orderBy('order', 'asc');
-            }
-        ])->get();
-
-        // return response()->json($categories);
-
-        $news = News::take(3)->orderBy('created_at')->get();
-
-        // Transform the data for frontend
-        $categories = $categories->map(function ($category) {
-            return [
-                'id' => $category->id,
-                'name' => $category->name,
-                'league' => $category->league,
-                'candidates' => $category->candidates->map(function ($candidate) {
-                    return [
-                        'id' => $candidate->id,
-                        'name' => $candidate->name,
-                        'image' => $candidate->image,
-                        'code' => $candidate->code,
-                        'order' => $candidate->order,
-                        'stats' => $candidate->stats,
-                    ];
-                }),
-            ];
-        });
-
-
-        return Inertia::render('Voting', compact('categories'));
-    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
@@ -28,12 +29,14 @@ class UserController extends Controller
             $request->validate([
                 'name' => 'required|string|min:2|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
-                'phone' => 'required|string|min:10|max:20|unique:users',
+                'phone' => 'nullable|string|min:10|max:20|unique:users',
                 'role' => 'required|string',
                 'team' => 'nullable|string',
             ]);
+            $generatedPassword = Str::random(10);
             $request->merge([
-                'password' => bcrypt('password'), // Auto-generate a password
+                'password' => bcrypt($generatedPassword), // Auto-generate a password
+                'plain_password' => $generatedPassword,
                 'status' => 'active', // Default status
             ]);
 
@@ -61,7 +64,7 @@ class UserController extends Controller
             $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-                'phone' => ['required', 'string', 'max:20', Rule::unique('users')->ignore($user->id)],
+                'phone' => ['nullable', 'string', 'max:20', Rule::unique('users')->ignore($user->id)],
                 'role' => 'required|string',
                 'status' => 'required|in:active,inactive',
                 'team' => 'nullable|string',

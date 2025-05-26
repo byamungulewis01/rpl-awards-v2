@@ -37,6 +37,10 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('inspector', absolute: false));
         }
 
+        if (Auth::user()->role === 'coach' || Auth::user()->role === 'team_captain') {
+            return redirect()->intended(route('voting', absolute: false));
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
