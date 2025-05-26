@@ -54,6 +54,7 @@ class VotingController extends Controller
         return Inertia::render('Welcome', compact('categories', 'vote_amount', 'news'));
     }
 
+
     public function news_details($slug)
     {
         try {
@@ -171,7 +172,6 @@ class VotingController extends Controller
             ]);
 
             return back()->with('success', 'Itora ryakozwe neza.');
-
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Hari ikibazo cyabaye. Ongera ugerageze.']);
         }
@@ -215,4 +215,42 @@ class VotingController extends Controller
         return hash('sha256', implode('|', array_filter($components)));
     }
 
+
+
+
+    public function voting()
+    {
+        // Eager load candidates with each category
+        $categories = Category::with([
+            'candidates' => function ($query) {
+                $query->orderBy('order', 'asc');
+            }
+        ])->get();
+
+        // return response()->json($categories);
+
+        $news = News::take(3)->orderBy('created_at')->get();
+
+        // Transform the data for frontend
+        $categories = $categories->map(function ($category) {
+            return [
+                'id' => $category->id,
+                'name' => $category->name,
+                'league' => $category->league,
+                'candidates' => $category->candidates->map(function ($candidate) {
+                    return [
+                        'id' => $candidate->id,
+                        'name' => $candidate->name,
+                        'image' => $candidate->image,
+                        'code' => $candidate->code,
+                        'order' => $candidate->order,
+                        'stats' => $candidate->stats,
+                    ];
+                }),
+            ];
+        });
+
+
+        return Inertia::render('Voting', compact('categories'));
+    }
 }

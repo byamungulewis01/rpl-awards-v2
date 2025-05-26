@@ -34,6 +34,7 @@ Route::middleware(['auth', 'verified', 'track-last-login', 'active-user'])->grou
     })->name('dashboard');
 
     Route::get('/inspector', [VotingController::class, 'inspector'])->name('inspector');
+    Route::get('/voting', [VotingController::class, 'voting'])->name('voting');
 
 
     Route::middleware('user-access:super_admin,admin')->group(function () {
@@ -58,8 +59,7 @@ Route::middleware(['auth', 'verified', 'track-last-login', 'active-user'])->grou
         // Profile
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-        ;
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');;
 
         Route::controller(NewsController::class)->group(function () {
             Route::get('/news', 'index')->name('news.index');
@@ -78,8 +78,6 @@ Route::middleware(['auth', 'verified', 'track-last-login', 'active-user'])->grou
     // Export voting data
     Route::get('/admin/nominations/export', [AdminNominationController::class, 'exportVotingData'])
         ->name('admin.nominations.export');
-
-
 });
 
 require __DIR__ . '/auth.php';

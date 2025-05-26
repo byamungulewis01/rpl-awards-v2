@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'phone',
         'role',
+        'team',
         'status',
         'last_login'
     ];
@@ -60,6 +61,8 @@ class User extends Authenticatable
             'admin' => 'Administrator',
             'super_admin' => 'Super Administrator',
             'inspector' => 'Ferwafa Inspector',
+            'coach' => 'Coach',
+            'team_captain' => 'Team Captain',
             default => ucfirst($this->role),
         };
     }

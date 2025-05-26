@@ -30,6 +30,7 @@ class UserController extends Controller
                 'email' => 'required|string|email|max:255|unique:users',
                 'phone' => 'required|string|min:10|max:20|unique:users',
                 'role' => 'required|string',
+                'team' => 'nullable|string',
             ]);
             $request->merge([
                 'password' => bcrypt('password'), // Auto-generate a password
@@ -63,6 +64,7 @@ class UserController extends Controller
                 'phone' => ['required', 'string', 'max:20', Rule::unique('users')->ignore($user->id)],
                 'role' => 'required|string',
                 'status' => 'required|in:active,inactive',
+                'team' => 'nullable|string',
             ]);
 
             $user->update($request->all());
